@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Shumail.in!</title>
+    <style>
+        /* Resetting default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Styling the body */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #FFDDC1, #FFC1DD);
+            color: #333;
+        }
+
+        /* Centered content box */
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Big greeting text */
+        h1 {
+            font-size: 2.5rem;
+            color: #FF69B4;
+        }
+
+        /* Styling the animated emoji */
+        .wave-emoji {
+            display: inline-block;
+            animation: wave 1.2s infinite ease-in-out;
+        }
+
+        /* Keyframe animation for the waving emoji */
+        @keyframes wave {
+            0%, 100% { transform: rotate(0); }
+            50% { transform: rotate(20deg); }
+        }
+
+        /* Description text */
+        p {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        /* Button style */
+        .button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #FF69B4;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Button hover effect */
+        .button:hover {
+            background-color: #FF1493;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👋 Hello, World! <span class="wave-emoji">👋</span></h1>
+        <p>Welcome to <strong>Shumail.in</strong></p>
+        <button class="button" onclick="alert('Stay tuned for more cool stuff!')">Say Hi!</button>
+    </div>
+</body>
+</html>
