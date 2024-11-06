@@ -3,51 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shummu's Fun Website</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <title>The Abyss | Creepy Tales</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1c1c1c;
+            color: #dcdcdc;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            text-align: center;
+            background-color: #0a0a0a;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 50px;
+            color: #ff0000;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        header p {
+            font-size: 18px;
+            color: #aaaaaa;
+            margin: 0;
+        }
+
+        nav {
+            background-color: #333;
+            padding: 10px;
+            text-align: center;
+            margin-top: -5px;
+        }
+
+        nav a {
+            color: #dcdcdc;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 20px;
+        }
+
+        nav a:hover {
+            color: #ff0000;
+        }
+
+        .main-content {
+            width: 90%;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #292929;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
+            text-align: justify;
+        }
+
+        .story-title {
+            color: #ff4d4d;
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .story-text {
+            line-height: 1.8;
+            font-size: 18px;
+        }
+
+        .creepy-image {
+            width: 100%;
+            height: auto;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        footer {
+            text-align: center;
+            background-color: #0a0a0a;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            color: #cccccc;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ff6666;
+        }
+    </style>
 </head>
 <body>
+
     <header>
-        <h1>Welcome to Shummu's Quirky Corner!</h1>
-        <p>This is where the fun begins! Enjoy your stay!</p>
+        <h1>The Abyss | Creepy Tales</h1>
+        <p>Can you escape the stories that lurk here?</p>
     </header>
 
     <nav>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#games">Games</a></li>
-            <li><a href="#recommendations">Recommendations</a></li>
-        </ul>
+        <a href="#story1">The Whispering Shadows</a>
+        <a href="#story2">The Hollow Eyes</a>
+        <a href="#story3">The Silent Siren</a>
     </nav>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>Hello there! I’m Shummu, and this is my corner of the internet. Don't judge me, I don't know much about web design, but I try. All of this was put together with some help from my buddy, ChatGPT!</p>
-    </section>
+    <div id="story1" class="main-content">
+        <h2 class="story-title">The Whispering Shadows</h2>
+        <p class="story-text">
+            It was a quiet night. The kind of night where everything feels too still. You know the kind, where even the air seems to hold its breath, waiting for something—anything—to happen. 
+            But nothing does. Not at first. Not until the whispers start.
+            <br><br>
+            You know them by now. The voices that call to you in the dead of night. Low and guttural. They come from the walls. From under the floorboards. From behind the mirror. Everywhere. 
+            Sometimes you hear them when you’re alone. Sometimes they come when you’re surrounded by people, but they’re always there, lingering just out of reach, their murmurs growing louder, more insistent.
+            <br><br>
+            You try to ignore them, but they’re getting harder to ignore. The voices—they know your name now. They whisper it in a mocking tone. “You can’t escape,” they chant, over and over again, their laughter rising like the howling wind.
+            <br><br>
+            It’s only when you close your eyes that you hear the footsteps. The ones that follow you even when you’re standing still. The ones that move in time with your breathing, getting closer and closer with every inhale. They’re behind you now, aren’t they? 
+            <br><br>
+            But when you turn around—there’s nothing there. Nothing except the shadows. And the whispers. The whispers that never stop.
+        </p>
+        <img class="creepy-image" src="https://www.w3schools.com/w3images/lights.jpg" alt="Whispering Shadows">
+    </div>
 
-    <section id="games">
-        <h2>Mini Games</h2>
-        <p>Try out the quiz below!</p>
-        <button onclick="alert('You clicked the button! Try something else next time.')">Click Me!</button>
-    </section>
+    <div id="story2" class="main-content">
+        <h2 class="story-title">The Hollow Eyes</h2>
+        <p class="story-text">
+            It started with a dream. But it wasn’t really a dream, was it? It felt too real. Too... alive. The eyes. They were watching you. Piercing. Hollow. Endless voids that stared into the depths of your soul. 
+            You woke up in a cold sweat, heart racing, but you didn’t forget those eyes.
+            <br><br>
+            You thought you’d shaken it off. You were wrong.
+            The eyes were there, again. Every reflection. Every window. Every mirror. The hollow eyes. Staring at you.
+            <br><br>
+            You started seeing them even when there was no reflection. In the dark. In the corner of your room. In the space between the walls. 
+            But no one else could see them. No one else could hear your frantic whispers as you pointed at the spot where those eyes stared, where they watched your every move.
+            <br><br>
+            They followed you everywhere. Until one day, they were in your thoughts. You could feel them there, just behind your eyelids, always watching.
+            <br><br>
+            And one night—when you finally closed your eyes, unable to take it anymore—you saw them, for real, standing at the foot of your bed. The hollow eyes. They whispered your name. And then, they smiled.
+        </p>
+        <img class="creepy-image" src="https://www.w3schools.com/w3images/woods.jpg" alt="Hollow Eyes">
+    </div>
 
-    <section id="recommendations">
-        <h2>Recommendations</h2>
-        <ul>
-            <li><a href="https://www.youtube.com/c/LinusTechTips">Linus Tech Tips</a> – Awesome tech reviews and builds!</li>
-            <li><a href="https://www.youtube.com/c/MKBHD">MKBHD</a> – Top-notch gadget reviews!</li>
-            <li><a href="https://www.spotify.com">Spotify</a> – Your music, your way!</li>
-        </ul>
-    </section>
+    <div id="story3" class="main-content">
+        <h2 class="story-title">The Silent Siren</h2>
+        <p class="story-text">
+            Everyone knows the legend of the Silent Siren. The one who waits in the still waters, her long hair flowing in the breeze, her eyes staring into your soul. She never sings, they say, but you hear her all the same. 
+            <br><br>
+            It’s said that if you hear her song, it’s already too late. 
+            The silence comes before the storm. The last thing you’ll hear is the silence as she watches you drown.
+            <br><br>
+            They thought it was a story. They thought it was a myth. Until they went to the lake. Until they heard her. Not the song. But the silence. The kind of silence that takes over your mind, makes you question your reality.
+            <br><br>
+            The waters grew still. The birds stopped chirping. The wind stilled. 
+            And then, out of nowhere, you hear the softest of whispers. A voice, like velvet, telling you to come closer. Telling you to step into the water. 
+            You don’t even know why, but you do.
+            <br><br>
+            And then, you feel the cold. The pressure. The pull. She’s taking you down. She’s drowning you. But you don’t scream. You don’t even try to fight it. 
+            Because the silence, it’s everywhere now. And all you can do is listen.
+        </p>
+        <img class="creepy-image" src="https://www.w3schools.com/w3images/mountains.jpg" alt="Silent Siren">
+    </div>
 
     <footer>
-        <p>Yes, I can't code. I made this using ChatGPT. (But hey, it's still fun, right?)</p>
-
-        <!-- Free Visitor Counter Embed Code -->
-        <a href='https://www.free-counters.org/'>Free-Counters</a> 
-        <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=a8e99b006205cf1545d89f4469cf2c9829c22aa8'></script>
-        <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1258554/t/1"></script>
+        <p>Do you still dare to explore the depths of these stories? <a href="https://www.example.com">Find more creepy tales... if you dare.</a></p>
     </footer>
 
 </body>
