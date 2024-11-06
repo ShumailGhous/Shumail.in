@@ -3,180 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Abyss | Creepy Tales</title>
+    <title>Hello World</title>
     <style>
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background-color: #1c1c1c;
-            color: #dcdcdc;
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f8ff;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
             margin: 0;
-            padding: 0;
         }
-
-        header {
+        h1 {
+            font-size: 3rem;
+            color: #ff6347;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .container {
             text-align: center;
-            background-color: #0a0a0a;
-            padding: 20px;
         }
-
-        header h1 {
-            font-size: 50px;
-            color: #ff0000;
-            margin: 0;
-            text-transform: uppercase;
-        }
-
-        header p {
-            font-size: 18px;
-            color: #aaaaaa;
-            margin: 0;
-        }
-
-        nav {
-            background-color: #333;
-            padding: 10px;
-            text-align: center;
-            margin-top: -5px;
-        }
-
-        nav a {
-            color: #dcdcdc;
-            text-decoration: none;
-            margin: 0 20px;
-            font-size: 20px;
-        }
-
-        nav a:hover {
-            color: #ff0000;
-        }
-
-        .main-content {
-            width: 90%;
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #292929;
+        .button {
+            background-color: #ff6347;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            border: none;
             border-radius: 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.7);
-            text-align: justify;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
-
-        .story-title {
-            color: #ff4d4d;
-            font-size: 40px;
-            text-align: center;
-            margin-bottom: 20px;
+        .button:hover {
+            background-color: #ff4500;
         }
-
-        .story-text {
-            line-height: 1.8;
-            font-size: 18px;
+        .result {
+            font-size: 1.25rem;
+            margin-top: 20px;
+            color: #2e8b57;
         }
-
-        .creepy-image {
-            width: 100%;
-            height: auto;
+        .error {
+            color: #d9534f;
+        }
+        .info {
+            font-size: 1.25rem;
             margin-top: 30px;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+            color: #333;
         }
-
-        footer {
-            text-align: center;
-            background-color: #0a0a0a;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        .random-fact {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
         }
-
-        footer p {
-            color: #cccccc;
-            font-size: 14px;
+        .score-board {
+            margin-top: 20px;
         }
-
-        footer a {
-            color: #ff0000;
+        .links {
+            margin-top: 30px;
+            font-size: 1.25rem;
+            color: #333;
+        }
+        .links a {
+            color: #ff6347;
             text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
         }
-
-        footer a:hover {
-            color: #ff6666;
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .recommendations {
+            margin-top: 40px;
+            font-size: 1.15rem;
+        }
+        .recommendations ul {
+            list-style-type: square;
+            text-align: left;
+        }
+        .funny-text {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4500;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>The Abyss | Creepy Tales</h1>
-        <p>Can you escape the stories that lurk here?</p>
-    </header>
+    <div class="container">
+        <h1>Shumail's Fun World</h1>
+        <p>Welcome to my quirky, fun-filled website. Test your guessing skills below!</p>
 
-    <nav>
-        <a href="#story1">The Whispering Shadows</a>
-        <a href="#story2">The Hollow Eyes</a>
-        <a href="#story3">The Silent Siren</a>
-    </nav>
+        <div id="game">
+            <p>Guess the number between 1 and 100:</p>
+            <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
+            <button class="button" onclick="checkGuess()">Guess</button>
+            <p id="result" class="result"></p>
+        </div>
 
-    <div id="story1" class="main-content">
-        <h2 class="story-title">The Whispering Shadows</h2>
-        <p class="story-text">
-            It was a quiet night. The kind of night where everything feels too still. You know the kind, where even the air seems to hold its breath, waiting for something—anything—to happen. 
-            But nothing does. Not at first. Not until the whispers start.
-            <br><br>
-            You know them by now. The voices that call to you in the dead of night. Low and guttural. They come from the walls. From under the floorboards. From behind the mirror. Everywhere. 
-            Sometimes you hear them when you’re alone. Sometimes they come when you’re surrounded by people, but they’re always there, lingering just out of reach, their murmurs growing louder, more insistent.
-            <br><br>
-            You try to ignore them, but they’re getting harder to ignore. The voices—they know your name now. They whisper it in a mocking tone. “You can’t escape,” they chant, over and over again, their laughter rising like the howling wind.
-            <br><br>
-            It’s only when you close your eyes that you hear the footsteps. The ones that follow you even when you’re standing still. The ones that move in time with your breathing, getting closer and closer with every inhale. They’re behind you now, aren’t they? 
-            <br><br>
-            But when you turn around—there’s nothing there. Nothing except the shadows. And the whispers. The whispers that never stop.
-        </p>
-        <img class="creepy-image" src="https://www.w3schools.com/w3images/lights.jpg" alt="Whispering Shadows">
+        <div class="score-board">
+            <p class="info">Here's a fun fact for you: Did you know a day on Venus is longer than a year on Venus?</p>
+        </div>
+
+        <p class="random-fact">Random Fun Fact: <span id="fact">Click the button above and let's guess a number!</span></p>
+
+        <!-- Links to YouTube Channels and other content -->
+        <div class="links">
+            <p><strong>Check out these awesome YouTube channels:</strong></p>
+            <a href="https://www.youtube.com/c/LinusTechTips" target="_blank">Linus Tech Tips</a>
+            <a href="https://www.youtube.com/c/UnboxTherapy" target="_blank">Unbox Therapy</a>
+            <a href="https://www.youtube.com/c/MarquesBrownlee" target="_blank">Marques Brownlee</a>
+            <a href="https://www.youtube.com/c/TechGumbo" target="_blank">TechGumbo</a>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="recommendations">
+            <p><strong>Other Cool Recommendations:</strong></p>
+            <ul>
+                <li>Learn coding with <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a>.</li>
+                <li>Check out <a href="https://www.ted.com/talks" target="_blank">TED Talks</a> for inspirational speeches.</li>
+                <li>Explore the latest trends in AI with <a href="https://openai.com/research" target="_blank">OpenAI Research</a>.</li>
+                <li>Get into gaming with <a href="https://www.steampowered.com" target="_blank">Steam</a> for awesome deals.</li>
+            </ul>
+        </div>
+
     </div>
 
-    <div id="story2" class="main-content">
-        <h2 class="story-title">The Hollow Eyes</h2>
-        <p class="story-text">
-            It started with a dream. But it wasn’t really a dream, was it? It felt too real. Too... alive. The eyes. They were watching you. Piercing. Hollow. Endless voids that stared into the depths of your soul. 
-            You woke up in a cold sweat, heart racing, but you didn’t forget those eyes.
-            <br><br>
-            You thought you’d shaken it off. You were wrong.
-            The eyes were there, again. Every reflection. Every window. Every mirror. The hollow eyes. Staring at you.
-            <br><br>
-            You started seeing them even when there was no reflection. In the dark. In the corner of your room. In the space between the walls. 
-            But no one else could see them. No one else could hear your frantic whispers as you pointed at the spot where those eyes stared, where they watched your every move.
-            <br><br>
-            They followed you everywhere. Until one day, they were in your thoughts. You could feel them there, just behind your eyelids, always watching.
-            <br><br>
-            And one night—when you finally closed your eyes, unable to take it anymore—you saw them, for real, standing at the foot of your bed. The hollow eyes. They whispered your name. And then, they smiled.
-        </p>
-        <img class="creepy-image" src="https://www.w3schools.com/w3images/woods.jpg" alt="Hollow Eyes">
+    <!-- Quirky Text -->
+    <div class="funny-text">
+        Yes, I can't code! 😅 Made this masterpiece using ChatGPT! 🤖
     </div>
 
-    <div id="story3" class="main-content">
-        <h2 class="story-title">The Silent Siren</h2>
-        <p class="story-text">
-            Everyone knows the legend of the Silent Siren. The one who waits in the still waters, her long hair flowing in the breeze, her eyes staring into your soul. She never sings, they say, but you hear her all the same. 
-            <br><br>
-            It’s said that if you hear her song, it’s already too late. 
-            The silence comes before the storm. The last thing you’ll hear is the silence as she watches you drown.
-            <br><br>
-            They thought it was a story. They thought it was a myth. Until they went to the lake. Until they heard her. Not the song. But the silence. The kind of silence that takes over your mind, makes you question your reality.
-            <br><br>
-            The waters grew still. The birds stopped chirping. The wind stilled. 
-            And then, out of nowhere, you hear the softest of whispers. A voice, like velvet, telling you to come closer. Telling you to step into the water. 
-            You don’t even know why, but you do.
-            <br><br>
-            And then, you feel the cold. The pressure. The pull. She’s taking you down. She’s drowning you. But you don’t scream. You don’t even try to fight it. 
-            Because the silence, it’s everywhere now. And all you can do is listen.
-        </p>
-        <img class="creepy-image" src="https://www.w3schools.com/w3images/mountains.jpg" alt="Silent Siren">
-    </div>
+    <script>
+        let targetNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
 
-    <footer>
-        <p>Do you still dare to explore the depths of these stories? <a href="https://www.example.com">Find more creepy tales... if you dare.</a></p>
-    </footer>
+        function checkGuess() {
+            const userGuess = document.getElementById("guessInput").value;
+            const result = document.getElementById("result");
 
+            attempts++;
+
+            if (userGuess == targetNumber) {
+                result.innerHTML = `Congratulations! You guessed the number in ${attempts} attempts! 🎉`;
+                result.classList.remove("error");
+                result.classList.add("success");
+                resetGame();
+            } else if (userGuess < targetNumber) {
+                result.innerHTML = "Too low! Try a bigger number. 📉";
+                result.classList.add("error");
+            } else {
+                result.innerHTML = "Too high! Try a smaller number. 📈";
+                result.classList.add("error");
+            }
+        }
+
+        function resetGame() {
+            setTimeout(() => {
+                targetNumber = Math.floor(Math.random() * 100) + 1;
+                attempts = 0;
+                document.getElementById("guessInput").value = '';
+                document.getElementById("result").innerHTML = '';
+            }, 3000);
+        }
+
+        // Fun fact generator for extra quirkiness
+        const facts = [
+            "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old.",
+            "Bananas are berries, but strawberries aren’t!",
+            "A group of flamingos is called a 'flamboyance.'",
+            "You can't hum while holding your nose.",
+            "Did you know? The Eiffel Tower can grow by up to 6 inches in the summer because of the heat."
+        ];
+
+        document.getElementById('fact').innerText = facts[Math.floor(Math.random() * facts.length)];
+    </script>
 </body>
 </html>
