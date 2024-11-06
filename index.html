@@ -3,84 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Shumail.in!</title>
+    <title>Welcome</title>
     <style>
-        /* Resetting default styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Styling the body */
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(45deg, #FFDDC1, #FFC1DD);
+            font-family: 'Arial', sans-serif;
+            background-color: #f1f8ff;
             color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
         }
-
-        /* Centered content box */
+        h1 {
+            font-size: 3rem;
+            color: #ff6347;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
         .container {
             text-align: center;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px 40px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
-        /* Big greeting text */
-        h1 {
-            font-size: 2.5rem;
-            color: #FF69B4;
-        }
-
-        /* Styling the animated emoji */
-        .wave-emoji {
-            display: inline-block;
-            animation: wave 1.2s infinite ease-in-out;
-        }
-
-        /* Keyframe animation for the waving emoji */
-        @keyframes wave {
-            0%, 100% { transform: rotate(0); }
-            50% { transform: rotate(20deg); }
-        }
-
-        /* Description text */
-        p {
-            font-size: 1.2rem;
-            margin-top: 10px;
-            color: #555;
-        }
-
-        /* Button style */
         .button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 1rem;
+            background-color: #ff6347;
             color: white;
-            background-color: #FF69B4;
+            padding: 10px 20px;
+            font-size: 1.5rem;
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
         }
-
-        /* Button hover effect */
         .button:hover {
-            background-color: #FF1493;
+            background-color: #ff4500;
+        }
+        .result {
+            font-size: 1.25rem;
+            margin-top: 20px;
+            color: #2e8b57;
+        }
+        .error {
+            color: #d9534f;
+        }
+        .info {
+            font-size: 1.25rem;
+            margin-top: 30px;
+            color: #333;
+        }
+        .random-fact {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+        .score-board {
+            margin-top: 20px;
+        }
+        .links {
+            margin-top: 30px;
+            font-size: 1.25rem;
+            color: #333;
+        }
+        .links a {
+            color: #ff6347;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+        .recommendations {
+            margin-top: 40px;
+            font-size: 1.15rem;
+        }
+        .recommendations ul {
+            list-style-type: square;
+            text-align: left;
+        }
+        .funny-text {
+            position: fixed;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4500;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>👋 Hello, World! <span class="wave-emoji">👋</span></h1>
-        <p>Welcome to <strong>Shumail.in</strong></p>
-        <button class="button" onclick="alert('Stay tuned for more cool stuff!')">Say Hi!</button>
+        <h1>Shumail's Fun World</h1>
+        <p>Welcome to my quirky, fun-filled website. Test your guessing skills below!</p>
+
+        <div id="game">
+            <p>Guess the number between 1 and 100:</p>
+            <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
+            <button class="button" onclick="checkGuess()">Guess</button>
+            <p id="result" class="result"></p>
+        </div>
+
+        <div class="score-board">
+            <p class="info">Here's a fun fact for you: Did you know a day on Venus is longer than a year on Venus?</p>
+        </div>
+
+        <p class="random-fact">Random Fun Fact: <span id="fact">Click the button above and let's guess a number!</span></p>
+
+        <!-- Links to YouTube Channels and other content -->
+        <div class="links">
+            <p><strong>Check out these awesome YouTube channels:</strong></p>
+            <a href="https://www.youtube.com/c/LinusTechTips" target="_blank">Linus Tech Tips</a>
+            <a href="https://www.youtube.com/c/UnboxTherapy" target="_blank">Unbox Therapy</a>
+            <a href="https://www.youtube.com/c/MarquesBrownlee" target="_blank">Marques Brownlee</a>
+            <a href="https://www.youtube.com/c/TechGumbo" target="_blank">TechGumbo</a>
+        </div>
+
+        <!-- Recommendations Section -->
+        <div class="recommendations">
+            <p><strong>Other Cool Recommendations:</strong></p>
+            <ul>
+                <li>Learn coding with <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a>.</li>
+                <li>Check out <a href="https://www.ted.com/talks" target="_blank">TED Talks</a> for inspirational speeches.</li>
+                <li>Explore the latest trends in AI with <a href="https://openai.com/research" target="_blank">OpenAI Research</a>.</li>
+                <li>Get into gaming with <a href="https://www.steampowered.com" target="_blank">Steam</a> for awesome deals.</li>
+            </ul>
+        </div>
+
     </div>
+
+    <!-- Quirky Text -->
+    <div class="funny-text">
+        Yes, I can't code! 😅 Made this masterpiece using ChatGPT! 🤖
+    </div>
+
+    <script>
+        let targetNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        function checkGuess() {
+            const userGuess = document.getElementById("guessInput").value;
+            const result = document.getElementById("result");
+
+            attempts++;
+
+            if (userGuess == targetNumber) {
+                result.innerHTML = `Congratulations! You guessed the number in ${attempts} attempts! 🎉`;
+                result.classList.remove("error");
+                result.classList.add("success");
+                resetGame();
+            } else if (userGuess < targetNumber) {
+                result.innerHTML = "Too low! Try a bigger number. 📉";
+                result.classList.add("error");
+            } else {
+                result.innerHTML = "Too high! Try a smaller number. 📈";
+                result.classList.add("error");
+            }
+        }
+
+        function resetGame() {
+            setTimeout(() => {
+                targetNumber = Math.floor(Math.random() * 100) + 1;
+                attempts = 0;
+                document.getElementById("guessInput").value = '';
+                document.getElementById("result").innerHTML = '';
+            }, 3000);
+        }
+
+        // Fun fact generator for extra quirkiness
+        const facts = [
+            "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old.",
+            "Bananas are berries, but strawberries aren’t!",
+            "A group of flamingos is called a 'flamboyance.'",
+            "You can't hum while holding your nose.",
+            "Did you know? The Eiffel Tower can grow by up to 6 inches in the summer because of the heat."
+        ];
+
+        document.getElementById('fact').innerText = facts[Math.floor(Math.random() * facts.length)];
+    </script>
 </body>
 </html>
