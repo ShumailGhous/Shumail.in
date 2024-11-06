@@ -3,188 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f1f8ff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            font-size: 3rem;
-            color: #ff6347;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .container {
-            text-align: center;
-        }
-        .button {
-            background-color: #ff6347;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1.5rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #ff4500;
-        }
-        .result {
-            font-size: 1.25rem;
-            margin-top: 20px;
-            color: #2e8b57;
-        }
-        .error {
-            color: #d9534f;
-        }
-        .info {
-            font-size: 1.25rem;
-            margin-top: 30px;
-            color: #333;
-        }
-        .random-fact {
-            font-style: italic;
-            color: #7f8c8d;
-            margin-top: 20px;
-        }
-        .score-board {
-            margin-top: 20px;
-        }
-        .links {
-            margin-top: 30px;
-            font-size: 1.25rem;
-            color: #333;
-        }
-        .links a {
-            color: #ff6347;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
-        .recommendations {
-            margin-top: 40px;
-            font-size: 1.15rem;
-        }
-        .recommendations ul {
-            list-style-type: square;
-            text-align: left;
-        }
-        .funny-text {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ff4500;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+    <title>Shummu's Fun Website</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 </head>
 <body>
+    <header>
+        <h1>Welcome to Shummu's Quirky Corner!</h1>
+        <p>This is where the fun begins! Enjoy your stay!</p>
+    </header>
 
-    <div class="container">
-        <h1>Hello World</h1>
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#games">Games</a></li>
+            <li><a href="#recommendations">Recommendations</a></li>
+        </ul>
+    </nav>
 
-        <div id="game">
-            <p>Guess the number between 1 and 100:</p>
-            <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
-            <button class="button" onclick="checkGuess()">Guess</button>
-            <p id="result" class="result"></p>
-        </div>
+    <section id="about">
+        <h2>About Me</h2>
+        <p>Hello there! I’m Shummu, and this is my corner of the internet. Don't judge me, I don't know much about web design, but I try. All of this was put together with some help from my buddy, ChatGPT!</p>
+    </section>
 
-        <div class="score-board">
-            <p class="info">Here's a fun fact for you: Did you know a day on Venus is longer than a year on Venus?</p>
-        </div>
+    <section id="games">
+        <h2>Mini Games</h2>
+        <p>Try out the quiz below!</p>
+        <button onclick="alert('You clicked the button! Try something else next time.')">Click Me!</button>
+    </section>
 
-        <p class="random-fact">Random Fun Fact: <span id="fact">Click the button above and let's guess a number!</span></p>
+    <section id="recommendations">
+        <h2>Recommendations</h2>
+        <ul>
+            <li><a href="https://www.youtube.com/c/LinusTechTips">Linus Tech Tips</a> – Awesome tech reviews and builds!</li>
+            <li><a href="https://www.youtube.com/c/MKBHD">MKBHD</a> – Top-notch gadget reviews!</li>
+            <li><a href="https://www.spotify.com">Spotify</a> – Your music, your way!</li>
+        </ul>
+    </section>
 
-        <!-- Links to YouTube Channels and other content -->
-        <div class="links">
-            <p><strong>Check out these awesome YouTube channels:</strong></p>
-            <a href="https://www.youtube.com/c/LinusTechTips" target="_blank">Linus Tech Tips</a>
-            <a href="https://www.youtube.com/c/UnboxTherapy" target="_blank">Unbox Therapy</a>
-            <a href="https://www.youtube.com/c/MarquesBrownlee" target="_blank">Marques Brownlee</a>
-            <a href="https://www.youtube.com/c/TechGumbo" target="_blank">TechGumbo</a>
-        </div>
+    <footer>
+        <p>Yes, I can't code. I made this using ChatGPT. (But hey, it's still fun, right?)</p>
 
-        <!-- Recommendations Section -->
-        <div class="recommendations">
-            <p><strong>Other Cool Recommendations:</strong></p>
-            <ul>
-                <li>Learn coding with <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a>.</li>
-                <li>Check out <a href="https://www.ted.com/talks" target="_blank">TED Talks</a> for inspirational speeches.</li>
-                <li>Explore the latest trends in AI with <a href="https://openai.com/research" target="_blank">OpenAI Research</a>.</li>
-                <li>Get into gaming with <a href="https://www.steampowered.com" target="_blank">Steam</a> for awesome deals.</li>
-            </ul>
-        </div>
+        <!-- Free Visitor Counter Embed Code -->
+        <a href='https://www.free-counters.org/'>Free-Counters</a> 
+        <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=a8e99b006205cf1545d89f4469cf2c9829c22aa8'></script>
+        <script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1258554/t/1"></script>
+    </footer>
 
-    </div>
-
-    <!-- Quirky Text -->
-    <div class="funny-text">
-        Yes, I can't code! 😅 Made this masterpiece using ChatGPT! 🤖
-    </div>
-
-    <script>
-        let targetNumber = Math.floor(Math.random() * 100) + 1;
-        let attempts = 0;
-
-        function checkGuess() {
-            const userGuess = document.getElementById("guessInput").value;
-            const result = document.getElementById("result");
-
-            attempts++;
-
-            if (userGuess == targetNumber) {
-                result.innerHTML = `Congratulations! You guessed the number in ${attempts} attempts! 🎉`;
-                result.classList.remove("error");
-                result.classList.add("success");
-                resetGame();
-            } else if (userGuess < targetNumber) {
-                result.innerHTML = "Too low! Try a bigger number. 📉";
-                result.classList.add("error");
-            } else {
-                result.innerHTML = "Too high! Try a smaller number. 📈";
-                result.classList.add("error");
-            }
-        }
-
-        function resetGame() {
-            setTimeout(() => {
-                targetNumber = Math.floor(Math.random() * 100) + 1;
-                attempts = 0;
-                document.getElementById("guessInput").value = '';
-                document.getElementById("result").innerHTML = '';
-            }, 3000);
-        }
-
-        // Fun fact generator for extra quirkiness
-        const facts = [
-            "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old.",
-            "Bananas are berries, but strawberries aren’t!",
-            "A group of flamingos is called a 'flamboyance.'",
-            "You can't hum while holding your nose.",
-            "Did you know? The Eiffel Tower can grow by up to 6 inches in the summer because of the heat."
-        ];
-
-        document.getElementById('fact').innerText = facts[Math.floor(Math.random() * facts.length)];
-    </script>
 </body>
 </html>
