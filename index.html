@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Langton's Ant Simulator</title>
+  <title>Langton's Ant Enhanced</title>
   <style>
     body {
       margin: 0;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
@@ -17,17 +18,15 @@
     }
     canvas {
       border: 1px solid #444;
+      margin-bottom: 10px;
     }
-    .info {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(0, 0, 0, 0.7);
-      padding: 10px;
-      border-radius: 5px;
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    button {
-      margin-top: 10px;
+    button, input {
+      margin: 5px;
       padding: 5px 10px;
       background-color: #444;
       color: white;
@@ -35,88 +34,129 @@
       cursor: pointer;
       border-radius: 3px;
     }
-    button:hover {
+    button:hover, input:hover {
       background-color: #666;
+    }
+    input[type="range"] {
+      width: 300px;
     }
   </style>
 </head>
 <body>
-  <div class="info">
-    <p><strong>Langton's Ant Enhanced</strong></p>
-    <p>Rules: <br> - Move right if block is black <br> - Move left if block is white <br> - Flip block's color</p>
-    <button onclick="randomizeGrid()">Randomize Grid</button>
-  </div>
   <canvas id="grid"></canvas>
+  <div class="controls">
+    <button onclick="randomizeGrid()">Randomize Grid</button>
+    <label>
+      Speed: <span id="speed-value">5</span> ms
+      <input type="range" id="speed" min="1" max="20" value="5" onchange="updateSpeed(this.value)">
+    </label>
+    <button onclick="addAnt()">Add Another Ant</button>
+    <label>
+      Grid Size:
+      <input type="number" id="gridSize" value="800" step="100" min="400" max="1000" onchange="updateGridSize(this.value)">
+    </label>
+  </div>
 
   <script>
     const canvas = document.getElementById('grid');
     const ctx = canvas.getContext('2d');
 
     // Canvas setup
-    const size = 800; // Size of canvas
-    const scale = 5; // Size of each grid cell
-    canvas.width = size;
-    canvas.height = size;
+    let gridSize = 800; // Default canvas size
+    let scale = 5; // Size of each grid cell
+    let cols, rows;
+    let grid, ants;
+    let speed = 5;
 
-    const cols = size / scale;
-    const rows = size / scale;
+    function initialize() {
+      canvas.width = gridSize;
+      canvas.height = gridSize;
+      cols = gridSize / scale;
+      rows = gridSize / scale;
+      grid = createSparseGrid();
+      ants = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 }];
+    }
 
-    // Create grid with random initial state
-    let grid = Array.from({ length: rows }, () => 
-      Array.from({ length: cols }, () => Math.random() > 0.5 ? 1 : 0)
-    );
-
-    // Ant properties
-    const ant = { x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 };
-    const directions = [
-      [0, -1], // Up
-      [1, 0],  // Right
-      [0, 1],  // Down
-      [-1, 0], // Left
-    ];
+    // Create grid with sparse black blocks
+    function createSparseGrid() {
+      const sparseGrid = Array.from({ length: rows }, () => Array(cols).fill(0));
+      const numBlackBlocks = Math.floor(cols * rows * 0.01); // 1% of the grid
+      for (let i = 0; i < numBlackBlocks; i++) {
+        const randomX = Math.floor(Math.random() * cols);
+        const randomY = Math.floor(Math.random() * rows);
+        sparseGrid[randomY][randomX] = 1; // Set block to black
+      }
+      return sparseGrid;
+    }
 
     // Draw grid
     function drawGrid() {
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          ctx.fillStyle = grid[y][x] ? 'black' : 'white';
+          ctx.fillStyle = `rgba(255, 255, 255, ${1 - grid[y][x] / 3})`; // Fade effect
           ctx.fillRect(x * scale, y * scale, scale, scale);
         }
       }
     }
 
-    // Move ant
-    function moveAnt() {
-      // Flip current cell
-      grid[ant.y][ant.x] = grid[ant.y][ant.x] ? 0 : 1;
+    // Move ants
+    function moveAnts() {
+      ants.forEach(ant => {
+        const currentState = grid[ant.y][ant.x];
+        grid[ant.y][ant.x] = (currentState + 1) % 4; // Cycle through colors
+        ant.dir = (ant.dir + (currentState === 0 ? 1 : -1) + 4) % 4;
 
-      // Turn
-      ant.dir = (ant.dir + (grid[ant.y][ant.x] ? -1 : 1) + 4) % 4;
+        // Move forward
+        const directions = [
+          [0, -1], // Up
+          [1, 0],  // Right
+          [0, 1],  // Down
+          [-1, 0], // Left
+        ];
+        ant.x = (ant.x + directions[ant.dir][0] + cols) % cols;
+        ant.y = (ant.y + directions[ant.dir][1] + rows) % rows;
+      });
+    }
 
-      // Move forward
-      ant.x = (ant.x + directions[ant.dir][0] + cols) % cols;
-      ant.y = (ant.y + directions[ant.dir][1] + rows) % rows;
+    // Add a new ant
+    function addAnt() {
+      ants.push({
+        x: Math.floor(Math.random() * cols),
+        y: Math.floor(Math.random() * rows),
+        dir: Math.floor(Math.random() * 4),
+      });
     }
 
     // Randomize grid
     function randomizeGrid() {
-      grid = Array.from({ length: rows }, () => 
-        Array.from({ length: cols }, () => Math.random() > 0.5 ? 1 : 0)
-      );
-      ant.x = Math.floor(cols / 2);
-      ant.y = Math.floor(rows / 2);
-      ant.dir = 0;
+      grid = createSparseGrid();
+      ants = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 }];
+    }
+
+    // Update simulation speed
+    function updateSpeed(newSpeed) {
+      speed = parseInt(newSpeed);
+      document.getElementById('speed-value').textContent = speed;
+    }
+
+    // Update grid size
+    function updateGridSize(newSize) {
+      gridSize = parseInt(newSize);
+      initialize();
     }
 
     // Simulation loop
     function loop() {
-      moveAnt();
+      moveAnts();
       drawGrid();
-      ctx.fillStyle = 'red';
-      ctx.fillRect(ant.x * scale, ant.y * scale, scale, scale);
-      requestAnimationFrame(loop);
+      ants.forEach(ant => {
+        ctx.fillStyle = 'red';
+        ctx.fillRect(ant.x * scale, ant.y * scale, scale, scale);
+      });
+      setTimeout(loop, 1000 / speed);
     }
 
+    initialize();
     drawGrid();
     loop();
   </script>
