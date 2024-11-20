@@ -7,83 +7,83 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
       background-color: #f0f0f0;
-      margin: 0;
-      height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
+      height: 100vh;
+      margin: 0;
     }
+
     h1 {
       font-size: 2em;
       margin-bottom: 20px;
     }
+
     #grid {
       display: grid;
-      grid-template-columns: repeat(101, 10px); /* Adjusted for a bigger grid */
-      grid-template-rows: repeat(101, 10px); /* Adjusted for a bigger grid */
-      margin-top: 20px;
-      justify-content: center;
+      grid-template-columns: repeat(51, 10px); /* Medium grid size */
+      grid-template-rows: repeat(51, 10px);
       gap: 1px;
       margin-bottom: 20px;
     }
+
     .cell {
       width: 10px;
       height: 10px;
       background-color: white;
       border: 1px solid #ddd;
     }
+
     .ant {
       width: 10px;
       height: 10px;
-      background-color: red; /* Red color for ants */
+      background-color: red;
       border-radius: 50%;
     }
-    .control-panel {
+
+    .controls {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
-    .control-panel button {
+
+    .controls button {
       padding: 10px 20px;
       margin: 5px;
       font-size: 1em;
       cursor: pointer;
-      border: none;
       background-color: #007bff;
       color: white;
-      border-radius: 5px;
-    }
-    .control-panel input {
-      width: 60px;
-      padding: 5px;
-      font-size: 1em;
-      text-align: center;
-      margin: 5px;
+      border: none;
       border-radius: 5px;
     }
 
-    /* Responsive layout for different screen sizes */
+    .controls input {
+      padding: 5px;
+      width: 60px;
+      margin-top: 10px;
+      font-size: 1em;
+      text-align: center;
+      border-radius: 5px;
+    }
+
     @media (max-width: 600px) {
       #grid {
-        grid-template-columns: repeat(51, 10px); /* Shrink grid size for small screens */
-        grid-template-rows: repeat(51, 10px); /* Shrink grid size for small screens */
+        grid-template-columns: repeat(31, 10px); /* Shrink grid size */
+        grid-template-rows: repeat(31, 10px);
       }
+
       h1 {
         font-size: 1.5em;
-      }
-      .control-panel {
-        margin-top: 20px;
       }
     }
 
     @media (max-width: 400px) {
       #grid {
-        grid-template-columns: repeat(30, 10px); /* Even smaller grid for very small screens */
-        grid-template-rows: repeat(30, 10px); /* Even smaller grid for very small screens */
+        grid-template-columns: repeat(21, 10px); /* Smaller grid for small screens */
+        grid-template-rows: repeat(21, 10px);
       }
     }
   </style>
@@ -92,20 +92,20 @@
   <h1>Langton's Ant Simulation</h1>
   <div id="grid"></div>
 
-  <div class="control-panel">
+  <div class="controls">
     <button onclick="startSimulation()">Start Simulation</button>
-    <button onclick="addAnt()">Add Ant</button>
     <button onclick="clearGrid()">Clear Grid</button>
     <label for="speed">Simulation Speed:</label>
     <input type="number" id="speed" value="100" min="1" max="500" />
   </div>
 
   <script>
-    const gridSize = 101; // Larger grid size
+    const gridSize = 51; // Medium grid size
     const grid = [];
-    let ants = [];
+    let ant = null;
     let interval;
 
+    // Create the grid
     function createGrid() {
       const gridContainer = document.getElementById('grid');
       gridContainer.innerHTML = '';
@@ -122,76 +122,67 @@
       }
     }
 
+    // Start the simulation
     function startSimulation() {
       if (interval) clearInterval(interval);
-      
+
+      // Place the ant at the center
+      const centerX = Math.floor(gridSize / 2);
+      const centerY = Math.floor(gridSize / 2);
+      ant = { x: centerX, y: centerY, direction: 0 }; // 0=Up, 1=Right, 2=Down, 3=Left
+
+      // Add some random black cells in the center
+      for (let i = 0; i < 6; i++) {
+        const randX = centerX + Math.floor(Math.random() * 3) - 1;
+        const randY = centerY + Math.floor(Math.random() * 3) - 1;
+        grid[randX][randY].style.backgroundColor = 'black';
+      }
+
+      // Set the initial position of the ant
+      const antCell = grid[ant.x][ant.y];
+      antCell.classList.add('ant');
+
+      // Start the movement loop
       interval = setInterval(() => {
-        ants.forEach(ant => {
-          // Current position of the ant
-          const x = ant.x;
-          const y = ant.y;
+        // Ant movement logic
+        const currentCell = grid[ant.x][ant.y];
+        if (currentCell.style.backgroundColor === 'white') {
+          currentCell.style.backgroundColor = 'black'; // Flip the cell color
+          ant.direction = (ant.direction + 1) % 4; // Turn right
+        } else {
+          currentCell.style.backgroundColor = 'white'; // Flip the cell color
+          ant.direction = (ant.direction + 3) % 4; // Turn left
+        }
 
-          // Check current color of the cell and change accordingly
-          const currentCell = grid[x][y];
-          if (currentCell.style.backgroundColor === 'white') {
-            currentCell.style.backgroundColor = 'black';
-            ant.direction = (ant.direction + 1) % 4; // Turn right
-          } else {
-            currentCell.style.backgroundColor = 'white';
-            ant.direction = (ant.direction + 3) % 4; // Turn left
-          }
+        // Move the ant based on its current direction
+        if (ant.direction === 0) ant.y--; // Move up
+        if (ant.direction === 1) ant.x++; // Move right
+        if (ant.direction === 2) ant.y++; // Move down
+        if (ant.direction === 3) ant.x--; // Move left
 
-          // Move ant
-          if (ant.direction === 0) ant.y--; // Up
-          if (ant.direction === 1) ant.x++; // Right
-          if (ant.direction === 2) ant.y++; // Down
-          if (ant.direction === 3) ant.x--; // Left
+        // Ensure the ant wraps around the grid edges
+        if (ant.x < 0) ant.x = gridSize - 1;
+        if (ant.y < 0) ant.y = gridSize - 1;
+        if (ant.x >= gridSize) ant.x = 0;
+        if (ant.y >= gridSize) ant.y = 0;
 
-          // Wrap around the grid
-          if (ant.x < 0) ant.x = gridSize - 1;
-          if (ant.y < 0) ant.y = gridSize - 1;
-          if (ant.x >= gridSize) ant.x = 0;
-          if (ant.y >= gridSize) ant.y = 0;
-
-          // Update ant's position
-          const antCell = grid[ant.x][ant.y];
-          antCell.classList.add('ant');
-        });
+        // Update the ant's position on the grid
+        const newAntCell = grid[ant.x][ant.y];
+        newAntCell.classList.add('ant');
       }, 1000 / document.getElementById('speed').value);
     }
 
-    function addAnt() {
-      const centerX = Math.floor(gridSize / 2);
-      const centerY = Math.floor(gridSize / 2);
-
-      // Create a random starting pattern in the center (6-7 blocks)
-      for (let i = 0; i < 6; i++) {
-        const randX = centerX + Math.floor(Math.random() * 3) - 1;  // -1, 0, 1
-        const randY = centerY + Math.floor(Math.random() * 3) - 1;  // -1, 0, 1
-        const randColor = Math.random() > 0.5 ? 'black' : 'white';
-        grid[randX][randY].style.backgroundColor = randColor;
-      }
-
-      // Place the ant in the center
-      const x = centerX;
-      const y = centerY;
-      const direction = Math.floor(Math.random() * 4); // Random direction
-      ants.push({ x, y, direction });
-
-      // Mark the starting position of the ant
-      const antCell = grid[x][y];
-      antCell.classList.add('ant');
-    }
-
+    // Clear the grid
     function clearGrid() {
       grid.forEach(row => row.forEach(cell => {
         cell.style.backgroundColor = 'white';
         cell.classList.remove('ant');
       }));
-      ants = [];
+      if (interval) clearInterval(interval); // Stop the simulation
     }
 
-    createGrid(); // Initialize the grid on page load
+    // Initialize the grid on page load
+    createGrid();
   </script>
 </body>
 </html>
