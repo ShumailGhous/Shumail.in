@@ -1,198 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f1f8ff;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        h1 {
-            font-size: 3rem;
-            color: #ff6347;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        .container {
-            text-align: center;
-        }
-        .button {
-            background-color: #ff6347;
-            color: white;
-            padding: 10px 20px;
-            font-size: 1.5rem;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #ff4500;
-        }
-        .result {
-            font-size: 1.25rem;
-            margin-top: 20px;
-            color: #2e8b57;
-        }
-        .error {
-            color: #d9534f;
-        }
-        .info {
-            font-size: 1.25rem;
-            margin-top: 30px;
-            color: #333;
-        }
-        .random-fact {
-            font-style: italic;
-            color: #7f8c8d;
-            margin-top: 20px;
-        }
-        .score-board {
-            margin-top: 20px;
-        }
-        .links {
-            margin-top: 30px;
-            font-size: 1.25rem;
-            color: #333;
-        }
-        .links a {
-            color: #ff6347;
-            text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
-        }
-        .links a:hover {
-            text-decoration: underline;
-        }
-        .recommendations {
-            margin-top: 40px;
-            font-size: 1.15rem;
-        }
-        .recommendations ul {
-            list-style-type: square;
-            text-align: left;
-        }
-        .funny-text {
-            position: fixed;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #ff4500;
-            color: white;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Langton's Ant Simulator</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #1e1e1e;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      border: 1px solid #444;
+    }
+    .info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      border-radius: 5px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    button:hover {
+      background-color: #666;
+    }
+  </style>
 </head>
 <body>
+  <div class="info">
+    <p><strong>Langton's Ant Enhanced</strong></p>
+    <p>Rules: <br> - Move right if block is black <br> - Move left if block is white <br> - Flip block's color</p>
+    <button onclick="randomizeGrid()">Randomize Grid</button>
+  </div>
+  <canvas id="grid"></canvas>
 
-    <div class="container">
-        <h1>Hello World</h1>
-        <p>Welcome to my quirky, fun-filled website. Test your guessing skills below!</p>
+  <script>
+    const canvas = document.getElementById('grid');
+    const ctx = canvas.getContext('2d');
 
-        <div id="game">
-            <p>Guess the number between 1 and 100:</p>
-            <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
-            <button class="button" onclick="checkGuess()">Guess</button>
-            <p id="result" class="result"></p>
-        </div>
+    // Canvas setup
+    const size = 800; // Size of canvas
+    const scale = 5; // Size of each grid cell
+    canvas.width = size;
+    canvas.height = size;
 
-        <div class="score-board">
-            <p class="info">Here's a fun fact for you: Did you know a day on Venus is longer than a year on Venus?</p>
-        </div>
+    const cols = size / scale;
+    const rows = size / scale;
 
-        <p class="random-fact">Random Fun Fact: <span id="fact">Click the button above and let's guess a number!</span></p>
+    // Create grid with random initial state
+    let grid = Array.from({ length: rows }, () => 
+      Array.from({ length: cols }, () => Math.random() > 0.5 ? 1 : 0)
+    );
 
-        <!-- Links to YouTube Channels and other content -->
-        <div class="links">
-            <p><strong>Check out these awesome YouTube channels:</strong></p>
-            <a href="https://www.youtube.com/c/LinusTechTips" target="_blank">Linus Tech Tips</a>
-            <a href="https://www.youtube.com/c/UnboxTherapy" target="_blank">Unbox Therapy</a>
-            <a href="https://www.youtube.com/c/MarquesBrownlee" target="_blank">Marques Brownlee</a>
-            <a href="https://www.youtube.com/c/TechGumbo" target="_blank">TechGumbo</a>
-        </div>
+    // Ant properties
+    const ant = { x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 };
+    const directions = [
+      [0, -1], // Up
+      [1, 0],  // Right
+      [0, 1],  // Down
+      [-1, 0], // Left
+    ];
 
-        <!-- Recommendations Section -->
-        <div class="recommendations">
-            <p><strong>Other Cool Recommendations:</strong></p>
-            <ul>
-                <li>Learn coding with <a href="https://www.freecodecamp.org" target="_blank">freeCodeCamp</a>.</li>
-                <li>Check out <a href="https://www.ted.com/talks" target="_blank">TED Talks</a> for inspirational speeches.</li>
-                <li>Explore the latest trends in AI with <a href="https://openai.com/research" target="_blank">OpenAI Research</a>.</li>
-                <li>Get into gaming with <a href="https://www.steampowered.com" target="_blank">Steam</a> for awesome deals.</li>
-            </ul>
-        </div>
-
-        <!-- Visitor Counter -->
-        <div class="visitor-counter">
-            <script type="text/javascript" src="https://www.free-counters.org/count/gle0"></script><br>
-            <a href='https://www.free-counters.org/'>Free-Counters</a> 
-            <script type='text/javascript' src='https://www.whomania.com/ctr?id=e1487b535ae3e5dae40e7f58bfcf7645fe5d6f1e'></script>
-        </div>
-
-    </div>
-
-    <!-- Quirky Text -->
-    <div class="funny-text">
-        Yes, I can't code! 😅 Made this masterpiece using ChatGPT! 🤖
-    </div>
-
-    <script>
-        let targetNumber = Math.floor(Math.random() * 100) + 1;
-        let attempts = 0;
-
-        function checkGuess() {
-            const userGuess = document.getElementById("guessInput").value;
-            const result = document.getElementById("result");
-
-            attempts++;
-
-            if (userGuess == targetNumber) {
-                result.innerHTML = `Congratulations! You guessed the number in ${attempts} attempts! 🎉`;
-                result.classList.remove("error");
-                result.classList.add("success");
-                resetGame();
-            } else if (userGuess < targetNumber) {
-                result.innerHTML = "Too low! Try a bigger number. 📉";
-                result.classList.add("error");
-            } else {
-                result.innerHTML = "Too high! Try a smaller number. 📈";
-                result.classList.add("error");
-            }
+    // Draw grid
+    function drawGrid() {
+      for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+          ctx.fillStyle = grid[y][x] ? 'black' : 'white';
+          ctx.fillRect(x * scale, y * scale, scale, scale);
         }
+      }
+    }
 
-        function resetGame() {
-            setTimeout(() => {
-                targetNumber = Math.floor(Math.random() * 100) + 1;
-                attempts = 0;
-                document.getElementById("guessInput").value = '';
-                document.getElementById("result").innerHTML = '';
-            }, 3000);
-        }
+    // Move ant
+    function moveAnt() {
+      // Flip current cell
+      grid[ant.y][ant.x] = grid[ant.y][ant.x] ? 0 : 1;
 
-        // Fun fact generator for extra quirkiness
-        const facts = [
-            "Honey never spoils. Archaeologists have found pots of honey in ancient tombs that are over 3,000 years old.",
-            "Bananas are berries, but strawberries aren’t!",
-            "A group of flamingos is called a 'flamboyance.'",
-            "You can't hum while holding your nose.",
-            "Did you know? The Eiffel Tower can grow by up to 6 inches in the summer because of the heat."
-        ];
+      // Turn
+      ant.dir = (ant.dir + (grid[ant.y][ant.x] ? -1 : 1) + 4) % 4;
 
-        document.getElementById('fact').innerText = facts[Math.floor(Math.random() * facts.length)];
-    </script>
+      // Move forward
+      ant.x = (ant.x + directions[ant.dir][0] + cols) % cols;
+      ant.y = (ant.y + directions[ant.dir][1] + rows) % rows;
+    }
+
+    // Randomize grid
+    function randomizeGrid() {
+      grid = Array.from({ length: rows }, () => 
+        Array.from({ length: cols }, () => Math.random() > 0.5 ? 1 : 0)
+      );
+      ant.x = Math.floor(cols / 2);
+      ant.y = Math.floor(rows / 2);
+      ant.dir = 0;
+    }
+
+    // Simulation loop
+    function loop() {
+      moveAnt();
+      drawGrid();
+      ctx.fillStyle = 'red';
+      ctx.fillRect(ant.x * scale, ant.y * scale, scale, scale);
+      requestAnimationFrame(loop);
+    }
+
+    drawGrid();
+    loop();
+  </script>
 </body>
 </html>
