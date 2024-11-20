@@ -10,10 +10,16 @@
       text-align: center;
       padding: 20px;
       background-color: #f0f0f0;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
     h1 {
-      margin-top: 50px;
       font-size: 2em;
+      margin-bottom: 20px;
     }
     #grid {
       display: grid;
@@ -21,6 +27,8 @@
       grid-template-rows: repeat(101, 10px); /* Adjusted for a bigger grid */
       margin-top: 20px;
       justify-content: center;
+      gap: 1px;
+      margin-bottom: 20px;
     }
     .cell {
       width: 10px;
@@ -35,7 +43,48 @@
       border-radius: 50%;
     }
     .control-panel {
-      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .control-panel button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+    }
+    .control-panel input {
+      width: 60px;
+      padding: 5px;
+      font-size: 1em;
+      text-align: center;
+      margin: 5px;
+      border-radius: 5px;
+    }
+
+    /* Responsive layout for different screen sizes */
+    @media (max-width: 600px) {
+      #grid {
+        grid-template-columns: repeat(51, 10px); /* Shrink grid size for small screens */
+        grid-template-rows: repeat(51, 10px); /* Shrink grid size for small screens */
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      .control-panel {
+        margin-top: 20px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      #grid {
+        grid-template-columns: repeat(30, 10px); /* Even smaller grid for very small screens */
+        grid-template-rows: repeat(30, 10px); /* Even smaller grid for very small screens */
+      }
     }
   </style>
 </head>
@@ -56,7 +105,7 @@
     const grid = [];
     let ants = [];
     let interval;
-    
+
     function createGrid() {
       const gridContainer = document.getElementById('grid');
       gridContainer.innerHTML = '';
@@ -112,8 +161,20 @@
     }
 
     function addAnt() {
-      const x = Math.floor(Math.random() * gridSize);
-      const y = Math.floor(Math.random() * gridSize);
+      const centerX = Math.floor(gridSize / 2);
+      const centerY = Math.floor(gridSize / 2);
+
+      // Create a random starting pattern in the center (6-7 blocks)
+      for (let i = 0; i < 6; i++) {
+        const randX = centerX + Math.floor(Math.random() * 3) - 1;  // -1, 0, 1
+        const randY = centerY + Math.floor(Math.random() * 3) - 1;  // -1, 0, 1
+        const randColor = Math.random() > 0.5 ? 'black' : 'white';
+        grid[randX][randY].style.backgroundColor = randColor;
+      }
+
+      // Place the ant in the center
+      const x = centerX;
+      const y = centerY;
       const direction = Math.floor(Math.random() * 4); // Random direction
       ants.push({ x, y, direction });
 
