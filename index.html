@@ -1,164 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Langton's Ant Generator</title>
-  <style>
-    body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background-color: #1e1e1e;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    canvas {
-      border: 1px solid #444;
-      margin-bottom: 10px;
-    }
-    .controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    button, input {
-      margin: 5px;
-      padding: 5px 10px;
-      background-color: #444;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 3px;
-    }
-    button:hover, input:hover {
-      background-color: #666;
-    }
-    input[type="range"] {
-      width: 300px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Langton's Ant Enhanced</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        canvas {
+            display: block;
+            margin: 20px auto;
+            border: 1px solid #000;
+        }
+        #controls {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .button {
+            padding: 10px 15px;
+            background-color: #0073e6;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #005bb5;
+        }
+        .button.danger {
+            background-color: #d9534f;
+        }
+        .button.danger:hover {
+            background-color: #c9302c;
+        }
+    </style>
 </head>
 <body>
-  <canvas id="grid"></canvas>
-  <div class="controls">
-    <button onclick="randomizeGrid()">Randomize Grid</button>
-    <label>
-      Speed: <span id="speed-value">5</span> ms
-      <input type="range" id="speed" min="1" max="20" value="5" onchange="updateSpeed(this.value)">
-    </label>
-    <button onclick="addAnt()">Add Another Ant</button>
-    <label>
-      Grid Size:
-      <input type="number" id="gridSize" value="800" step="100" min="400" max="1000" onchange="updateGridSize(this.value)">
-    </label>
-  </div>
+    <h1>Langton's Ant Simulation</h1>
+    <div id="controls">
+        <label>
+            Ant Behavior:
+            <select id="antBehavior">
+                <option value="langton">Langton's Ant</option>
+                <option value="turk">Turk's Ant</option>
+                <option value="custom">Custom Rules</option>
+            </select>
+        </label>
+        <button class="button" onclick="fastForward()">Fast Forward</button>
+        <label>
+            Fast Forward Steps:
+            <input id="fastSteps" type="number" min="1" max="10000" value="1000">
+        </label>
+        <button class="button" onclick="togglePause()">
+            <span id="pauseText">Pause</span>
+        </button>
+    </div>
+    <canvas id="antCanvas"></canvas>
 
-  <script>
-    const canvas = document.getElementById('grid');
-    const ctx = canvas.getContext('2d');
+    <script>
+        const canvas = document.getElementById('antCanvas');
+        const ctx = canvas.getContext('2d');
 
-    // Canvas setup
-    let gridSize = 800; // Default canvas size
-    let scale = 10; // Adjusted scale for larger cells
-    let cols, rows;
-    let grid, ants;
-    let speed = 5;
+        // Configurable variables
+        let gridSize = 101; // Default grid size
+        let cellSize = 5; // Size of each cell in pixels
+        let grid = []; // Grid to track cell states
+        let ants = []; // Array of ants
+        let steps = 0; // Step counter
+        let isPaused = false;
+        let antBehavior = 'langton'; // Default ant behavior
 
-    function initialize() {
-      canvas.width = gridSize;
-      canvas.height = gridSize;
-      cols = gridSize / scale;
-      rows = gridSize / scale;
-      grid = createSparseGrid();
-      ants = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 }];
-    }
-
-    // Create grid with sparse black blocks
-    function createSparseGrid() {
-      const sparseGrid = Array.from({ length: rows }, () => Array(cols).fill(0));
-      const numBlackBlocks = Math.floor(cols * rows * 0.01); // 1% of the grid
-      for (let i = 0; i < numBlackBlocks; i++) {
-        const randomX = Math.floor(Math.random() * cols);
-        const randomY = Math.floor(Math.random() * rows);
-        sparseGrid[randomY][randomX] = 1; // Set block to black
-      }
-      return sparseGrid;
-    }
-
-    // Draw grid
-    function drawGrid() {
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          ctx.fillStyle = grid[y][x] ? 'black' : 'white';
-          ctx.fillRect(x * scale, y * scale, scale, scale);
+        // Initialize the grid
+        function initGrid(size) {
+            grid = Array.from({ length: size }, () => Array(size).fill(0)); // 0 for white, 1 for black
+            const center = Math.floor(size / 2);
+            grid[center][center] = 1; // Add one black cell at the center
         }
-      }
-    }
 
-    // Move ants
-    function moveAnts() {
-      ants.forEach(ant => {
-        const currentState = grid[ant.y][ant.x];
-        grid[ant.y][ant.x] = 1 - currentState; // Flip block's color
-        ant.dir = (ant.dir + (currentState === 0 ? 1 : -1) + 4) % 4;
+        // Ant constructor
+        function Ant(x, y, direction) {
+            this.x = x;
+            this.y = y;
+            this.direction = direction; // 0: up, 1: right, 2: down, 3: left
+            this.color = `hsl(${Math.random() * 360}, 100%, 50%)`; // Unique color
+        }
 
-        // Move forward
-        const directions = [
-          [0, -1], // Up
-          [1, 0],  // Right
-          [0, 1],  // Down
-          [-1, 0], // Left
-        ];
-        ant.x = (ant.x + directions[ant.dir][0] + cols) % cols;
-        ant.y = (ant.y + directions[ant.dir][1] + rows) % rows;
-      });
-    }
+        function addAnt() {
+            const center = Math.floor(gridSize / 2);
+            ants.push(new Ant(center, center, 0));
+        }
 
-    // Add a new ant
-    function addAnt() {
-      ants.push({
-        x: Math.floor(Math.random() * cols),
-        y: Math.floor(Math.random() * rows),
-        dir: Math.floor(Math.random() * 4),
-      });
-    }
+        function drawGrid() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let x = 0; x < gridSize; x++) {
+                for (let y = 0; y < gridSize; y++) {
+                    ctx.fillStyle = grid[x][y] === 1 ? 'black' : 'white';
+                    ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+        }
 
-    // Randomize grid
-    function randomizeGrid() {
-      grid = createSparseGrid();
-      ants = [{ x: Math.floor(cols / 2), y: Math.floor(rows / 2), dir: 0 }];
-    }
+        function drawAnts() {
+            ants.forEach(ant => {
+                ctx.fillStyle = ant.color;
+                ctx.fillRect(ant.x * cellSize, ant.y * cellSize, cellSize, cellSize);
+            });
+        }
 
-    // Update simulation speed
-    function updateSpeed(newSpeed) {
-      speed = parseInt(newSpeed);
-      document.getElementById('speed-value').textContent = speed;
-    }
+        function moveAnt(ant) {
+            if (antBehavior === 'langton') {
+                // Langton's Ant behavior
+                if (grid[ant.x][ant.y] === 0) {
+                    ant.direction = (ant.direction + 3) % 4; // Turn left
+                    grid[ant.x][ant.y] = 1; // Flip to black
+                } else {
+                    ant.direction = (ant.direction + 1) % 4; // Turn right
+                    grid[ant.x][ant.y] = 0; // Flip to white
+                }
+            } else if (antBehavior === 'turk') {
+                // Turk's Ant behavior (different set of rules)
+                if (grid[ant.x][ant.y] === 0) {
+                    ant.direction = (ant.direction + 1) % 4; // Always turn right
+                    grid[ant.x][ant.y] = 1; // Flip to black
+                } else {
+                    ant.direction = (ant.direction + 3) % 4; // Always turn left
+                    grid[ant.x][ant.y] = 0; // Flip to white
+                }
+            } else if (antBehavior === 'custom') {
+                // Custom behavior (add your own rules here)
+                if (grid[ant.x][ant.y] === 0) {
+                    ant.direction = (ant.direction + 2) % 4; // Jump two directions
+                    grid[ant.x][ant.y] = 1; // Flip to black
+                } else {
+                    ant.direction = (ant.direction + 1) % 4; // Turn right
+                    grid[ant.x][ant.y] = 0; // Flip to white
+                }
+            }
 
-    // Update grid size
-    function updateGridSize(newSize) {
-      gridSize = parseInt(newSize);
-      initialize();
-    }
+            // Move forward
+            switch (ant.direction) {
+                case 0: ant.y = (ant.y - 1 + gridSize) % gridSize; break; // Up
+                case 1: ant.x = (ant.x + 1) % gridSize; break; // Right
+                case 2: ant.y = (ant.y + 1) % gridSize; break; // Down
+                case 3: ant.x = (ant.x - 1 + gridSize) % gridSize; break; // Left
+            }
+        }
 
-    // Simulation loop
-    function loop() {
-      moveAnts();
-      drawGrid();
-      ants.forEach(ant => {
-        ctx.fillStyle = 'red';
-        ctx.fillRect(ant.x * scale, ant.y * scale, scale, scale);
-      });
-      setTimeout(loop, 1000 / speed);
-    }
+        function togglePause() {
+            isPaused = !isPaused;
+            document.getElementById('pauseText').textContent = isPaused ? 'Resume' : 'Pause';
+        }
 
-    initialize();
-    drawGrid();
-    loop();
-  </script>
+        function fastForward() {
+            const stepsToFastForward = parseInt(document.getElementById('fastSteps').value);
+            for (let i = 0; i < stepsToFastForward; i++) {
+                ants.forEach(moveAnt);
+                steps++;
+            }
+            drawGrid();
+            drawAnts();
+        }
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.floor((e.clientX - rect.left) / cellSize);
+            const y = Math.floor((e.clientY - rect.top) / cellSize);
+            grid[x][y] = grid[x][y] === 0 ? 1 : 0; // Toggle cell color
+            drawGrid();
+            drawAnts();
+        });
+
+        function update() {
+            if (!isPaused) {
+                ants.forEach(moveAnt);
+                steps++;
+                drawGrid();
+                drawAnts();
+            }
+            requestAnimationFrame(update);
+        }
+
+        // Initialize simulation
+        canvas.width = gridSize * cellSize;
+        canvas.height = gridSize * cellSize;
+        initGrid(gridSize);
+        addAnt();
+        drawGrid();
+        update();
+
+        document.getElementById('antBehavior').addEventListener('change', (e) => {
+            antBehavior = e.target.value;
+        });
+    </script>
 </body>
 </html>
