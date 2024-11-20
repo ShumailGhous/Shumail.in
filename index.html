@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Langton's Ant Enhanced</title>
+  <title>Langton's Ant Generator</title>
   <style>
     body {
       margin: 0;
@@ -63,7 +63,7 @@
 
     // Canvas setup
     let gridSize = 800; // Default canvas size
-    let scale = 5; // Size of each grid cell
+    let scale = 10; // Adjusted scale for larger cells
     let cols, rows;
     let grid, ants;
     let speed = 5;
@@ -93,7 +93,7 @@
     function drawGrid() {
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
-          ctx.fillStyle = `rgba(255, 255, 255, ${1 - grid[y][x] / 3})`; // Fade effect
+          ctx.fillStyle = grid[y][x] ? 'black' : 'white';
           ctx.fillRect(x * scale, y * scale, scale, scale);
         }
       }
@@ -103,7 +103,7 @@
     function moveAnts() {
       ants.forEach(ant => {
         const currentState = grid[ant.y][ant.x];
-        grid[ant.y][ant.x] = (currentState + 1) % 4; // Cycle through colors
+        grid[ant.y][ant.x] = 1 - currentState; // Flip block's color
         ant.dir = (ant.dir + (currentState === 0 ? 1 : -1) + 4) % 4;
 
         // Move forward
