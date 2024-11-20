@@ -7,186 +7,130 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      text-align: center;
+      padding: 20px;
       background-color: #f0f0f0;
-      margin: 0;
     }
-
     h1 {
-      margin-top: 20px;
+      margin-top: 50px;
+      font-size: 2em;
     }
-
     #grid {
       display: grid;
-      grid-template-columns: repeat(40, 20px);
-      grid-template-rows: repeat(40, 20px);
-      gap: 1px;
-      border: 2px solid #333;
+      grid-template-columns: repeat(101, 10px); /* Adjusted for a bigger grid */
+      grid-template-rows: repeat(101, 10px); /* Adjusted for a bigger grid */
       margin-top: 20px;
+      justify-content: center;
     }
-
     .cell {
-      width: 20px;
-      height: 20px;
+      width: 10px;
+      height: 10px;
       background-color: white;
       border: 1px solid #ddd;
-      cursor: pointer;
     }
-
-    .cell.black {
-      background-color: black;
+    .ant {
+      width: 10px;
+      height: 10px;
+      background-color: red; /* Red color for ants */
+      border-radius: 50%;
     }
-
-    .button-container {
+    .control-panel {
       margin-top: 20px;
-    }
-
-    .experiment-details {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      max-width: 600px;
-      width: 100%;
-    }
-
-    .experiment-details h2 {
-      margin-top: 0;
     }
   </style>
 </head>
 <body>
-
   <h1>Langton's Ant Simulation</h1>
-
   <div id="grid"></div>
 
-  <div class="button-container">
-    <button id="startButton">Start Simulation</button>
-    <button id="pauseButton">Pause Simulation</button>
-    <button id="addAntsButton">Add Ants</button>
-  </div>
-
-  <div class="experiment-details">
-    <h2>Experiment Details</h2>
-    <p>This simulation demonstrates Langton's Ant, a simple but intriguing computational experiment.</p>
-    <p><strong>Langton's Ant Rules:</strong></p>
-    <ul>
-      <li>If the ant is on a white square, it turns right and the square turns black.</li>
-      <li>If the ant is on a black square, it turns left and the square turns white.</li>
-      <li>The ant moves forward one step after each turn.</li>
-    </ul>
-    <p>The experiment explores how the ant's movement evolves over time, eventually producing complex patterns after many steps. The grid can be resized, and multiple ants can be added for further experimentation.</p>
+  <div class="control-panel">
+    <button onclick="startSimulation()">Start Simulation</button>
+    <button onclick="addAnt()">Add Ant</button>
+    <button onclick="clearGrid()">Clear Grid</button>
+    <label for="speed">Simulation Speed:</label>
+    <input type="number" id="speed" value="100" min="1" max="500" />
   </div>
 
   <script>
-    // Simulation variables
-    const gridSize = 40;
+    const gridSize = 101; // Larger grid size
     const grid = [];
     let ants = [];
-    let isRunning = false;
-    let intervalId = null;
+    let interval;
+    
+    function createGrid() {
+      const gridContainer = document.getElementById('grid');
+      gridContainer.innerHTML = '';
 
-    // Create the grid
-    const gridElement = document.getElementById('grid');
-    for (let i = 0; i < gridSize * gridSize; i++) {
-      const cell = document.createElement('div');
-      cell.classList.add('cell');
-      gridElement.appendChild(cell);
-      grid.push(cell);
+      for (let i = 0; i < gridSize; i++) {
+        const row = [];
+        for (let j = 0; j < gridSize; j++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          gridContainer.appendChild(cell);
+          row.push(cell);
+        }
+        grid.push(row);
+      }
     }
 
-    // Ant constructor
-    function Ant(x, y, direction) {
-      this.x = x;
-      this.y = y;
-      this.direction = direction;
+    function startSimulation() {
+      if (interval) clearInterval(interval);
+      
+      interval = setInterval(() => {
+        ants.forEach(ant => {
+          // Current position of the ant
+          const x = ant.x;
+          const y = ant.y;
+
+          // Check current color of the cell and change accordingly
+          const currentCell = grid[x][y];
+          if (currentCell.style.backgroundColor === 'white') {
+            currentCell.style.backgroundColor = 'black';
+            ant.direction = (ant.direction + 1) % 4; // Turn right
+          } else {
+            currentCell.style.backgroundColor = 'white';
+            ant.direction = (ant.direction + 3) % 4; // Turn left
+          }
+
+          // Move ant
+          if (ant.direction === 0) ant.y--; // Up
+          if (ant.direction === 1) ant.x++; // Right
+          if (ant.direction === 2) ant.y++; // Down
+          if (ant.direction === 3) ant.x--; // Left
+
+          // Wrap around the grid
+          if (ant.x < 0) ant.x = gridSize - 1;
+          if (ant.y < 0) ant.y = gridSize - 1;
+          if (ant.x >= gridSize) ant.x = 0;
+          if (ant.y >= gridSize) ant.y = 0;
+
+          // Update ant's position
+          const antCell = grid[ant.x][ant.y];
+          antCell.classList.add('ant');
+        });
+      }, 1000 / document.getElementById('speed').value);
     }
 
-    // Ant movement logic
-    Ant.prototype.move = function() {
-      const currentIndex = this.y * gridSize + this.x;
-      const currentCell = grid[currentIndex];
+    function addAnt() {
+      const x = Math.floor(Math.random() * gridSize);
+      const y = Math.floor(Math.random() * gridSize);
+      const direction = Math.floor(Math.random() * 4); // Random direction
+      ants.push({ x, y, direction });
 
-      if (currentCell.classList.contains('black')) {
-        this.turnLeft();
-        currentCell.classList.remove('black');
-      } else {
-        this.turnRight();
-        currentCell.classList.add('black');
-      }
-
-      // Move the ant
-      if (this.direction === 'up') {
-        this.y = (this.y - 1 + gridSize) % gridSize;
-      } else if (this.direction === 'down') {
-        this.y = (this.y + 1) % gridSize;
-      } else if (this.direction === 'left') {
-        this.x = (this.x - 1 + gridSize) % gridSize;
-      } else if (this.direction === 'right') {
-        this.x = (this.x + 1) % gridSize;
-      }
-    };
-
-    // Turn the ant left
-    Ant.prototype.turnLeft = function() {
-      if (this.direction === 'up') this.direction = 'left';
-      else if (this.direction === 'left') this.direction = 'down';
-      else if (this.direction === 'down') this.direction = 'right';
-      else if (this.direction === 'right') this.direction = 'up';
-    };
-
-    // Turn the ant right
-    Ant.prototype.turnRight = function() {
-      if (this.direction === 'up') this.direction = 'right';
-      else if (this.direction === 'right') this.direction = 'down';
-      else if (this.direction === 'down') this.direction = 'left';
-      else if (this.direction === 'left') this.direction = 'up';
-    };
-
-    // Start the simulation
-    document.getElementById('startButton').addEventListener('click', function() {
-      if (!isRunning) {
-        isRunning = true;
-        intervalId = setInterval(moveAnts, 100);
-      }
-    });
-
-    // Pause the simulation
-    document.getElementById('pauseButton').addEventListener('click', function() {
-      if (isRunning) {
-        clearInterval(intervalId);
-        isRunning = false;
-      }
-    });
-
-    // Add ants to the grid
-    document.getElementById('addAntsButton').addEventListener('click', function() {
-      // Add a few ants to random positions
-      for (let i = 0; i < 3; i++) {
-        const x = Math.floor(Math.random() * gridSize);
-        const y = Math.floor(Math.random() * gridSize);
-        const direction = ['up', 'down', 'left', 'right'][Math.floor(Math.random() * 4)];
-        const ant = new Ant(x, y, direction);
-        ants.push(ant);
-      }
-    });
-
-    // Move all ants
-    function moveAnts() {
-      ants.forEach(ant => ant.move());
+      // Mark the starting position of the ant
+      const antCell = grid[x][y];
+      antCell.classList.add('ant');
     }
 
-    // Ensure the grid zooming is smooth and not awkward
-    window.addEventListener('resize', function() {
-      const gridWidth = window.innerWidth < 600 ? 20 : 40;
-      gridElement.style.gridTemplateColumns = `repeat(${gridWidth}, 20px)`;
-      gridElement.style.gridTemplateRows = `repeat(${gridWidth}, 20px)`;
-    });
+    function clearGrid() {
+      grid.forEach(row => row.forEach(cell => {
+        cell.style.backgroundColor = 'white';
+        cell.classList.remove('ant');
+      }));
+      ants = [];
+    }
+
+    createGrid(); // Initialize the grid on page load
   </script>
 </body>
 </html>
