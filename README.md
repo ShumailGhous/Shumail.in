@@ -1,76 +1,58 @@
-# Langton's Ant Simulation
+# 3x+1 Conjecture Explorer
 
-This project provides an interactive simulation of **Langton's Ant** with customizable rules and additional features. Users can choose different ant behaviors, interact with the grid to set initial states, and speed up the simulation with a fast-forward option.
-
----
+A simple web-based tool to explore the **Collatz Conjecture** (also known as the 3x+1 problem). This project allows users to visualize the sequence for any starting number, batch-analyze ranges, and compare sequences between different numbers.
 
 ## Features
+- Visualize the 3x+1 sequence for any positive integer.
+- Batch analyze sequences for a range of numbers.
+- Compare sequences of two different numbers.
+- Provides key statistics such as steps to reach 1, maximum value, and average value.
+- Interactive charting powered by [Chart.js](https://www.chartjs.org/).
 
-- **Multiple Ant Behaviors**: Choose between Langton's Ant, Turk's Ant, and a custom rule set.
-- **Interactive Grid Editing**: Click on the grid to toggle cell colors and set custom initial states.
-- **Speed Boost on Pause**: Fast-forward the simulation for a specified number of steps while paused.
-- **Customizable Grid Size**: The grid can be resized to suit the user's preference.
-- **Colorful Ants**: Each ant has a unique color for better visualization.
-- **Live Simulation**: Watch the ant move and evolve the grid in real-time.
+## How to Use
+1. Open the `index.html` file in any modern web browser.
+2. Use the input fields and buttons to:
+   - Enter a number and visualize its 3x+1 sequence.
+   - Analyze a range of numbers to see how many steps each number takes to reach 1.
+   - Compare two numbers to observe their sequence patterns side by side.
 
----
+## UI Overview
+- **Controls Section**: 
+  - Input fields for single number and range-based analysis.
+  - Buttons for visualization, batch analysis, and comparison.
+- **Chart Area**:
+  - Displays the visual representation of sequences.
+- **Statistics Section**:
+  - Shows key metrics about the sequence.
 
-## Controls
+## File Structure
+- `index.html`: The main HTML file that includes the structure and logic of the application.
+- `README.md`: Project documentation (this file).
+- External dependency: `Chart.js` (loaded via CDN).
 
-- **Ant Behavior**: Select from **Langton's Ant**, **Turk's Ant**, or **Custom Rules**.
-- **Grid Interaction**: Click on any cell in the grid to toggle between black and white.
-- **Pause/Resume**: Click the "Pause" button to pause or resume the simulation.
-- **Fast Forward**: Specify how many steps to simulate while paused using the input field and press the "Fast Forward" button.
+## Example
+### Single Number Visualization
+- Enter a number (e.g., `27`) in the **Enter number** field.
+- Click **Visualize Sequence** to see the sequence and statistics.
 
----
+### Batch Analyze
+- Enter a start and end range (e.g., `1` to `100`).
+- Click **Batch Analyze** to observe how many steps each number takes.
+
+### Comparison
+- Enter two numbers (e.g., `19` and `27`) when prompted.
+- Click **Compare Sequences** to see their sequences on the same chart.
 
 ## Technologies Used
+- **HTML**: Structure of the web page.
+- **CSS**: Styling for a modern and minimalistic design.
+- **JavaScript**: Logic for sequence generation, chart rendering, and user interaction.
+- **Chart.js**: Visualization of the sequences.
 
-- **HTML5**: For structure and layout.
-- **CSS3**: For styling.
-- **JavaScript**: For the logic and interactivity.
-
----
-
-## Future Enhancements
-
-- **Pattern Export**: Save the current grid state as a file to reload later.
-- **Multiple Ants**: Simulate multiple ants moving at the same time with different behaviors.
-- **Additional Rule Variants**: Add more ant behavior rule sets for variety.
-
----
 
 ## License
-
-The MIT License (MIT)
-
-Copyright (c) [year] [fullname]
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+This project is licensed under the MIT License. Feel free to use, modify, and distribute.
 
 ---
 
-## Acknowledgments
-
-- **Langton's Ant**: The simulation follows the classic Langton's Ant rules.
-- **Inspired by**: Various sources and algorithm visualizations online.
-
----
-
-Feel free to contribute or explore the project further! If you have any ideas for new features, open an issue or submit a pull request.
+Happy exploring the mysterious 3x+1 conjecture!
