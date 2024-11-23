@@ -3,186 +3,213 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Langton's Ant Simulation</title>
+  <title>3x+1 Conjecture Explorer</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      background-color: #1e1e1e;
+      color: white;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      justify-content: flex-start;
+      min-height: 100vh;
     }
-
-    h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
+    header {
+      text-align: center;
+      padding: 20px;
     }
-
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(51, 10px); /* Medium grid size */
-      grid-template-rows: repeat(51, 10px);
-      gap: 1px;
-      margin-bottom: 20px;
+    canvas {
+      max-width: 90%;
+      margin: 20px auto;
+      background: #222;
+      border: 1px solid #555;
     }
-
-    .cell {
-      width: 10px;
-      height: 10px;
-      background-color: white;
-      border: 1px solid #ddd;
-    }
-
-    .ant {
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      border-radius: 50%;
-    }
-
     .controls {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
     }
-
-    .controls button {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 1em;
-      cursor: pointer;
-      background-color: #007bff;
-      color: white;
+    button, input {
+      padding: 10px 15px;
+      font-size: 16px;
       border: none;
       border-radius: 5px;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
     }
-
-    .controls input {
-      padding: 5px;
-      width: 60px;
-      margin-top: 10px;
-      font-size: 1em;
-      text-align: center;
-      border-radius: 5px;
+    button:hover, input:hover {
+      background-color: #666;
     }
-
-    @media (max-width: 600px) {
-      #grid {
-        grid-template-columns: repeat(31, 10px); /* Shrink grid size */
-        grid-template-rows: repeat(31, 10px);
-      }
-
-      h1 {
-        font-size: 1.5em;
-      }
+    input[type="number"] {
+      width: 100px;
     }
-
-    @media (max-width: 400px) {
-      #grid {
-        grid-template-columns: repeat(21, 10px); /* Smaller grid for small screens */
-        grid-template-rows: repeat(21, 10px);
-      }
+    .stats {
+      color: #ccc;
+      font-size: 14px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Langton's Ant Simulation</h1>
-  <div id="grid"></div>
+  <header>
+    <h1>3x+1 Conjecture Explorer</h1>
+    <p>Visualize the Collatz Conjecture and analyze patterns in the 3x+1 sequence.</p>
+  </header>
 
   <div class="controls">
-    <button onclick="startSimulation()">Start Simulation</button>
-    <button onclick="clearGrid()">Clear Grid</button>
-    <label for="speed">Simulation Speed:</label>
-    <input type="number" id="speed" value="100" min="1" max="500" />
+    <input type="number" id="startNumber" placeholder="Enter number" value="27">
+    <button onclick="runSequence()">Visualize Sequence</button>
+    <input type="number" id="batchStart" placeholder="Range Start" value="1">
+    <input type="number" id="batchEnd" placeholder="Range End" value="100">
+    <button onclick="batchAnalyze()">Batch Analyze</button>
+    <button onclick="compareNumbers()">Compare Sequences</button>
   </div>
 
+  <canvas id="chart"></canvas>
+  <div class="stats" id="stats"></div>
+
   <script>
-    const gridSize = 51; // Medium grid size
-    const grid = [];
-    let ant = null;
-    let interval;
+    const ctx = document.getElementById('chart').getContext('2d');
+    let chart;
 
-    // Create the grid
-    function createGrid() {
-      const gridContainer = document.getElementById('grid');
-      gridContainer.innerHTML = '';
-
-      for (let i = 0; i < gridSize; i++) {
-        const row = [];
-        for (let j = 0; j < gridSize; j++) {
-          const cell = document.createElement('div');
-          cell.classList.add('cell');
-          gridContainer.appendChild(cell);
-          row.push(cell);
-        }
-        grid.push(row);
-      }
-    }
-
-    // Start the simulation
-    function startSimulation() {
-      if (interval) clearInterval(interval);
-
-      // Place the ant at the center
-      const centerX = Math.floor(gridSize / 2);
-      const centerY = Math.floor(gridSize / 2);
-      ant = { x: centerX, y: centerY, direction: 0 }; // 0=Up, 1=Right, 2=Down, 3=Left
-
-      // Add some random black cells in the center
-      for (let i = 0; i < 6; i++) {
-        const randX = centerX + Math.floor(Math.random() * 3) - 1;
-        const randY = centerY + Math.floor(Math.random() * 3) - 1;
-        grid[randX][randY].style.backgroundColor = 'black';
+    function runSequence() {
+      const startNumber = parseInt(document.getElementById('startNumber').value);
+      if (isNaN(startNumber) || startNumber <= 0) {
+        alert("Please enter a positive integer.");
+        return;
       }
 
-      // Set the initial position of the ant
-      const antCell = grid[ant.x][ant.y];
-      antCell.classList.add('ant');
+      const { sequence, cycleDetected, stats } = generate3x1Sequence(startNumber);
+      const labels = Array.from({ length: sequence.length }, (_, i) => i);
+      const maxVal = Math.max(...sequence);
 
-      // Start the movement loop
-      interval = setInterval(() => {
-        // Ant movement logic
-        const currentCell = grid[ant.x][ant.y];
-        if (currentCell.style.backgroundColor === 'white') {
-          currentCell.style.backgroundColor = 'black'; // Flip the cell color
-          ant.direction = (ant.direction + 1) % 4; // Turn right
-        } else {
-          currentCell.style.backgroundColor = 'white'; // Flip the cell color
-          ant.direction = (ant.direction + 3) % 4; // Turn left
+      displayChart(labels, sequence, `3x+1 Sequence for ${startNumber}`, `Max Value: ${maxVal}, Steps: ${sequence.length}`);
+      displayStats(stats, cycleDetected);
+    }
+
+    function generate3x1Sequence(n) {
+      const sequence = [];
+      const visited = new Set();
+      let cycleDetected = false;
+      let steps = 0;
+
+      while (n !== 1) {
+        if (visited.has(n)) {
+          cycleDetected = true;
+          break;
         }
+        visited.add(n);
+        sequence.push(n);
+        n = n % 2 === 0 ? n / 2 : 3 * n + 1;
+        steps++;
+      }
 
-        // Move the ant based on its current direction
-        if (ant.direction === 0) ant.y--; // Move up
-        if (ant.direction === 1) ant.x++; // Move right
-        if (ant.direction === 2) ant.y++; // Move down
-        if (ant.direction === 3) ant.x--; // Move left
+      sequence.push(1);
+      steps++;
 
-        // Ensure the ant wraps around the grid edges
-        if (ant.x < 0) ant.x = gridSize - 1;
-        if (ant.y < 0) ant.y = gridSize - 1;
-        if (ant.x >= gridSize) ant.x = 0;
-        if (ant.y >= gridSize) ant.y = 0;
-
-        // Update the ant's position on the grid
-        const newAntCell = grid[ant.x][ant.y];
-        newAntCell.classList.add('ant');
-      }, 1000 / document.getElementById('speed').value);
+      return { sequence, cycleDetected, stats: { steps, max: Math.max(...sequence), avg: sequence.reduce((a, b) => a + b, 0) / sequence.length }};
     }
 
-    // Clear the grid
-    function clearGrid() {
-      grid.forEach(row => row.forEach(cell => {
-        cell.style.backgroundColor = 'white';
-        cell.classList.remove('ant');
-      }));
-      if (interval) clearInterval(interval); // Stop the simulation
+    function batchAnalyze() {
+      const start = parseInt(document.getElementById('batchStart').value);
+      const end = parseInt(document.getElementById('batchEnd').value);
+
+      if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start >= end) {
+        alert("Please enter a valid positive range (start < end).");
+        return;
+      }
+
+      const labels = [];
+      const steps = [];
+      const maxValues = [];
+      const cycleCounts = [];
+
+      for (let i = start; i <= end; i++) {
+        const { sequence, cycleDetected, stats } = generate3x1Sequence(i);
+        labels.push(i);
+        steps.push(stats.steps);
+        maxValues.push(stats.max);
+        cycleCounts.push(cycleDetected ? 1 : 0);
+      }
+
+      displayChart(
+        labels,
+        steps,
+        `Steps for Numbers ${start} to ${end}`,
+        `Maximum Steps: ${Math.max(...steps)}, Average Steps: ${(steps.reduce((a, b) => a + b, 0) / steps.length).toFixed(2)}`
+      );
     }
 
-    // Initialize the grid on page load
-    createGrid();
+    function compareNumbers() {
+      const num1 = parseInt(prompt("Enter the first number to compare:"));
+      const num2 = parseInt(prompt("Enter the second number to compare:"));
+
+      if (isNaN(num1) || isNaN(num2) || num1 <= 0 || num2 <= 0) {
+        alert("Please enter valid positive integers.");
+        return;
+      }
+
+      const { sequence: seq1, stats: stats1 } = generate3x1Sequence(num1);
+      const { sequence: seq2, stats: stats2 } = generate3x1Sequence(num2);
+
+      const labels = Array.from({ length: Math.max(seq1.length, seq2.length) }, (_, i) => i);
+      const data = {
+        labels: labels,
+        datasets: [
+          {
+            label: `Sequence for ${num1}`,
+            data: seq1.concat(Array(labels.length - seq1.length).fill(null)),
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            fill: false,
+          },
+          {
+            label: `Sequence for ${num2}`,
+            data: seq2.concat(Array(labels.length - seq2.length).fill(null)),
+            borderColor: 'rgb(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            fill: false,
+          },
+        ]
+      };
+
+      displayChart(labels, data, `Comparison between ${num1} and ${num2}`, `Max Values: ${stats1.max}, ${stats2.max}`);
+    }
+
+    function displayChart(labels, data, title, footer) {
+      if (chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          plugins: {
+            legend: { display: true },
+            title: { display: true, text: title },
+            tooltip: { callbacks: { footer: () => footer } },
+          },
+          scales: {
+            x: { title: { display: true, text: 'Steps / Numbers' } },
+            y: { title: { display: true, text: 'Value' } },
+          },
+        },
+      });
+    }
+
+    function displayStats(stats, cycleDetected) {
+      const statsDiv = document.getElementById('stats');
+      statsDiv.innerHTML = `
+        <p>Steps to reach 1: ${stats.steps}</p>
+        <p>Maximum value encountered: ${stats.max}</p>
+        <p>Average value: ${stats.avg.toFixed(2)}</p>
+        <p>Cycle detected: ${cycleDetected ? "Yes" : "No"}</p>
+      `;
+    }
   </script>
 </body>
 </html>
