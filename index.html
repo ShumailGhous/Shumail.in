@@ -1,215 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3x+1 Conjecture Explorer</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #1e1e1e;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-    }
-    header {
-      text-align: center;
-      padding: 20px;
-    }
-    canvas {
-      max-width: 90%;
-      margin: 20px auto;
-      background: #222;
-      border: 1px solid #555;
-    }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 15px;
-    }
-    button, input {
-      padding: 10px 15px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      background-color: #444;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover, input:hover {
-      background-color: #666;
-    }
-    input[type="number"] {
-      width: 100px;
-    }
-    .stats {
-      color: #ccc;
-      font-size: 14px;
-      margin-top: 20px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Coming Soon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #ffb6c1, #ffecb3); /* Pastel gradient */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-size: cover;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            width: 80%;
+            max-width: 500px;
+            background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Light pattern */
+            background-size: 50px 50px;
+        }
+
+        h1 {
+            font-size: 50px;
+            color: #ff7f7f; /* Bright pastel pink */
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 20px;
+            color: #6fa3ef; /* Bright pastel blue */
+            margin-bottom: 20px;
+        }
+
+        .date {
+            margin-top: 30px;
+            font-size: 16px;
+            color: #999;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>3x+1 Conjecture Explorer</h1>
-    <p>Visualize the Collatz Conjecture and analyze patterns in the 3x+1 sequence.</p>
-  </header>
 
-  <div class="controls">
-    <input type="number" id="startNumber" placeholder="Enter number" value="27">
-    <button onclick="runSequence()">Visualize Sequence</button>
-    <input type="number" id="batchStart" placeholder="Range Start" value="1">
-    <input type="number" id="batchEnd" placeholder="Range End" value="100">
-    <button onclick="batchAnalyze()">Batch Analyze</button>
-    <button onclick="compareNumbers()">Compare Sequences</button>
-  </div>
+<div class="container">
+    <h1>Procrastinating...</h1>
+    <p>Coming Soon!</p>
+    <div class="date">
+        <p><strong id="current-date"></strong></p>
+    </div>
+</div>
 
-  <canvas id="chart"></canvas>
-  <div class="stats" id="stats"></div>
+<script>
+    // Display current date dynamically
+    const currentDate = new Date().toLocaleDateString();
+    document.getElementById('current-date').textContent = currentDate;
+</script>
 
-  <script>
-    const ctx = document.getElementById('chart').getContext('2d');
-    let chart;
-
-    function runSequence() {
-      const startNumber = parseInt(document.getElementById('startNumber').value);
-      if (isNaN(startNumber) || startNumber <= 0) {
-        alert("Please enter a positive integer.");
-        return;
-      }
-
-      const { sequence, cycleDetected, stats } = generate3x1Sequence(startNumber);
-      const labels = Array.from({ length: sequence.length }, (_, i) => i);
-      const maxVal = Math.max(...sequence);
-
-      displayChart(labels, sequence, `3x+1 Sequence for ${startNumber}`, `Max Value: ${maxVal}, Steps: ${sequence.length}`);
-      displayStats(stats, cycleDetected);
-    }
-
-    function generate3x1Sequence(n) {
-      const sequence = [];
-      const visited = new Set();
-      let cycleDetected = false;
-      let steps = 0;
-
-      while (n !== 1) {
-        if (visited.has(n)) {
-          cycleDetected = true;
-          break;
-        }
-        visited.add(n);
-        sequence.push(n);
-        n = n % 2 === 0 ? n / 2 : 3 * n + 1;
-        steps++;
-      }
-
-      sequence.push(1);
-      steps++;
-
-      return { sequence, cycleDetected, stats: { steps, max: Math.max(...sequence), avg: sequence.reduce((a, b) => a + b, 0) / sequence.length }};
-    }
-
-    function batchAnalyze() {
-      const start = parseInt(document.getElementById('batchStart').value);
-      const end = parseInt(document.getElementById('batchEnd').value);
-
-      if (isNaN(start) || isNaN(end) || start <= 0 || end <= 0 || start >= end) {
-        alert("Please enter a valid positive range (start < end).");
-        return;
-      }
-
-      const labels = [];
-      const steps = [];
-      const maxValues = [];
-      const cycleCounts = [];
-
-      for (let i = start; i <= end; i++) {
-        const { sequence, cycleDetected, stats } = generate3x1Sequence(i);
-        labels.push(i);
-        steps.push(stats.steps);
-        maxValues.push(stats.max);
-        cycleCounts.push(cycleDetected ? 1 : 0);
-      }
-
-      displayChart(
-        labels,
-        steps,
-        `Steps for Numbers ${start} to ${end}`,
-        `Maximum Steps: ${Math.max(...steps)}, Average Steps: ${(steps.reduce((a, b) => a + b, 0) / steps.length).toFixed(2)}`
-      );
-    }
-
-    function compareNumbers() {
-      const num1 = parseInt(prompt("Enter the first number to compare:"));
-      const num2 = parseInt(prompt("Enter the second number to compare:"));
-
-      if (isNaN(num1) || isNaN(num2) || num1 <= 0 || num2 <= 0) {
-        alert("Please enter valid positive integers.");
-        return;
-      }
-
-      const { sequence: seq1, stats: stats1 } = generate3x1Sequence(num1);
-      const { sequence: seq2, stats: stats2 } = generate3x1Sequence(num2);
-
-      const labels = Array.from({ length: Math.max(seq1.length, seq2.length) }, (_, i) => i);
-      const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: `Sequence for ${num1}`,
-            data: seq1.concat(Array(labels.length - seq1.length).fill(null)),
-            borderColor: 'rgb(75, 192, 192)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            fill: false,
-          },
-          {
-            label: `Sequence for ${num2}`,
-            data: seq2.concat(Array(labels.length - seq2.length).fill(null)),
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: false,
-          },
-        ]
-      };
-
-      displayChart(labels, data, `Comparison between ${num1} and ${num2}`, `Max Values: ${stats1.max}, ${stats2.max}`);
-    }
-
-    function displayChart(labels, data, title, footer) {
-      if (chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type: 'line',
-        data: data,
-        options: {
-          plugins: {
-            legend: { display: true },
-            title: { display: true, text: title },
-            tooltip: { callbacks: { footer: () => footer } },
-          },
-          scales: {
-            x: { title: { display: true, text: 'Steps / Numbers' } },
-            y: { title: { display: true, text: 'Value' } },
-          },
-        },
-      });
-    }
-
-    function displayStats(stats, cycleDetected) {
-      const statsDiv = document.getElementById('stats');
-      statsDiv.innerHTML = `
-        <p>Steps to reach 1: ${stats.steps}</p>
-        <p>Maximum value encountered: ${stats.max}</p>
-        <p>Average value: ${stats.avg.toFixed(2)}</p>
-        <p>Cycle detected: ${cycleDetected ? "Yes" : "No"}</p>
-      `;
-    }
-  </script>
 </body>
 </html>
