@@ -8,12 +8,12 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #ffb6c1, #ffecb3); /* Pastel gradient */
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             background-size: cover;
         }
 
@@ -59,6 +59,18 @@
 </div>
 
 <script>
+    // Array of pastel background colors to cycle through
+    const colors = [
+        'linear-gradient(to bottom, #ffb6c1, #ffecb3)', // Pink to Yellow
+        'linear-gradient(to bottom, #c1e1ff, #a8c7e8)', // Light Blue to Lavender
+        'linear-gradient(to bottom, #ffd1dc, #e3f9ff)', // Light Pink to Light Blue
+        'linear-gradient(to bottom, #ffcccb, #b2f7ef)', // Peach to Aqua
+    ];
+
+    // Change the background color randomly on refresh
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    document.body.style.background = randomColor;
+
     // Display current date dynamically
     const currentDate = new Date().toLocaleDateString();
     document.getElementById('current-date').textContent = currentDate;
