@@ -7,90 +7,114 @@
     <style>
         /* General Styles */
         body {
-            font-family: 'Courier New', Courier, monospace;
-            background: radial-gradient(circle, #ff00f7, #6200ea);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #121212;
             color: #fff;
-            text-align: center;
-            padding: 50px 20px;
             margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Clock in the top left */
+        #clock {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 1.5em;
+            color: #00ffab;
+            font-weight: 600;
+        }
+
+        /* Centered Content */
+        .content {
+            text-align: center;
         }
 
         h1 {
             font-size: 3em;
-            margin-bottom: 20px;
-            color: #fff;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            color: #00ffab;
         }
 
         p {
             font-size: 1.2em;
-            color: #00ffab;
-            margin-top: -20px;
+            color: #00c4cc;
         }
 
         button {
-            background: #00ffab;
-            color: #6200ea;
+            background: transparent;
+            border: 2px solid #00ffab;
+            color: #00ffab;
             font-size: 1.5em;
             padding: 15px 30px;
-            border: none;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(0, 255, 171, 0.5);
-            transition: all 0.2s ease-in-out;
+            transition: all 0.2s ease;
         }
 
         button:hover {
-            background: #6200ea;
-            color: #00ffab;
+            background: #00ffab;
+            color: #121212;
             transform: scale(1.1);
         }
 
         #clickCount {
             font-size: 2em;
-            margin-top: 30px;
+            margin-top: 20px;
             color: #00ffab;
-            text-shadow: 0 0 15px rgba(0, 255, 171, 0.5);
+            letter-spacing: 2px;
         }
 
+        /* Footer at the bottom */
         footer {
-            margin-top: 50px;
+            position: absolute;
+            bottom: 20px;
             font-size: 1.2em;
             color: #fff;
         }
 
         footer span {
-            color: #ff00f7;
+            color: #00ffab;
             font-weight: bold;
-        }
-
-        /* Neon Glow Animation */
-        @keyframes glow {
-            0% { text-shadow: 0 0 5px #fff, 0 0 10px #ff00f7, 0 0 20px #ff00f7, 0 0 40px #ff00f7, 0 0 80px #ff00f7; }
-            50% { text-shadow: 0 0 10px #fff, 0 0 20px #ff00f7, 0 0 30px #ff00f7, 0 0 60px #ff00f7, 0 0 100px #ff00f7; }
-            100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff00f7, 0 0 20px #ff00f7, 0 0 40px #ff00f7, 0 0 80px #ff00f7; }
-        }
-
-        #clickCount {
-            animation: glow 1.5s ease-in-out infinite alternate;
         }
     </style>
 </head>
 <body>
 
-    <h1>Click Counter</h1>
-    <p>Click the button to increase the count globally!</p>
-    <button onclick="incrementCounter()">Click Me</button>
-    <div id="clickCount">Loading...</div>
+    <!-- Live Clock -->
+    <div id="clock"></div>
 
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Click Counter</h1>
+        <p>Click the button to increase the count globally!</p>
+        <button onclick="incrementCounter()">Click Me</button>
+        <div id="clickCount">Loading...</div>
+    </div>
+
+    <!-- Footer -->
     <footer>
-        <p>Made with ❤️ by <span>...Human...</span></p>
+        <p>Made with ❤️ by <span>Shumail</span></p>
     </footer>
 
     <script>
         const workerURL = 'https://young-bonus-eb16.ghousshumail-cloudflare.workers.dev';
         const MAX_RETRIES = 3;
         let countDisplayed = 0;
+
+        // Update the clock every second
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+        }
 
         // Fetch and display the current click count from the Cloudflare Worker
         async function fetchClickCount() {
@@ -132,7 +156,10 @@
         }
 
         // Initialize the counter when the page loads
-        window.onload = fetchClickCount;
+        window.onload = () => {
+            fetchClickCount();
+            setInterval(updateClock, 1000); // Update clock every second
+        };
 
         // Real-time updates to the count
         setInterval(fetchClickCount, 1000); // Every second, refresh the count
