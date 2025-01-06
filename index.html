@@ -30,6 +30,7 @@
 
     <script>
         const workerURL = 'https://young-bonus-eb16.ghousshumail-cloudflare.workers.dev';
+        const MAX_RETRIES = 3;
 
         // Fetch and display the current click count from the Cloudflare Worker
         async function fetchClickCount() {
@@ -46,8 +47,8 @@
             }
         }
 
-        // Increment the click count via the Cloudflare Worker
-        async function incrementCounter() {
+        // Retry mechanism for incrementing the click count
+        async function incrementCounter(retries = 0) {
             try {
                 const response = await fetch(`${workerURL}/incrementCount`, { 
                     method: 'POST' 
@@ -59,7 +60,12 @@
                 document.getElementById('clickCount').innerText = `Total Clicks: ${data.count}`;
             } catch (error) {
                 console.error(error);
-                document.getElementById('clickCount').innerText = 'Error incrementing count';
+                if (retries < MAX_RETRIES) {
+                    console.log(`Retrying... Attempt ${retries + 1}`);
+                    incrementCounter(retries + 1);
+                } else {
+                    document.getElementById('clickCount').innerText = 'Error incrementing count. Please try again later.';
+                }
             }
         }
 
