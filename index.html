@@ -5,32 +5,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Click Counter</title>
     <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
+            background: radial-gradient(circle, #ff00f7, #6200ea);
+            color: #fff;
             text-align: center;
-            padding: 50px;
+            padding: 50px 20px;
+            margin: 0;
         }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #00ffab;
+            margin-top: -20px;
+        }
+
+        button {
+            background: #00ffab;
+            color: #6200ea;
+            font-size: 1.5em;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(0, 255, 171, 0.5);
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            background: #6200ea;
+            color: #00ffab;
+            transform: scale(1.1);
+        }
+
         #clickCount {
             font-size: 2em;
-            margin-top: 20px;
+            margin-top: 30px;
+            color: #00ffab;
+            text-shadow: 0 0 15px rgba(0, 255, 171, 0.5);
         }
-        button {
-            padding: 10px 20px;
-            font-size: 1em;
-            cursor: pointer;
+
+        footer {
+            margin-top: 50px;
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        footer span {
+            color: #ff00f7;
+            font-weight: bold;
+        }
+
+        /* Neon Glow Animation */
+        @keyframes glow {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #ff00f7, 0 0 20px #ff00f7, 0 0 40px #ff00f7, 0 0 80px #ff00f7; }
+            50% { text-shadow: 0 0 10px #fff, 0 0 20px #ff00f7, 0 0 30px #ff00f7, 0 0 60px #ff00f7, 0 0 100px #ff00f7; }
+            100% { text-shadow: 0 0 5px #fff, 0 0 10px #ff00f7, 0 0 20px #ff00f7, 0 0 40px #ff00f7, 0 0 80px #ff00f7; }
+        }
+
+        #clickCount {
+            animation: glow 1.5s ease-in-out infinite alternate;
         }
     </style>
 </head>
 <body>
 
     <h1>Click Counter</h1>
-    <p>Click the button to increase the count!</p>
+    <p>Click the button to increase the count globally!</p>
     <button onclick="incrementCounter()">Click Me</button>
     <div id="clickCount">Loading...</div>
+
+    <footer>
+        <p>Made with ❤️ by <span>...Human...</span></p>
+    </footer>
 
     <script>
         const workerURL = 'https://young-bonus-eb16.ghousshumail-cloudflare.workers.dev';
         const MAX_RETRIES = 3;
+        let countDisplayed = 0;
 
         // Fetch and display the current click count from the Cloudflare Worker
         async function fetchClickCount() {
@@ -40,7 +100,8 @@
                     throw new Error('Failed to fetch count');
                 }
                 const data = await response.json();
-                document.getElementById('clickCount').innerText = `Total Clicks: ${data.count}`;
+                countDisplayed = data.count;
+                document.getElementById('clickCount').innerText = `Total Clicks: ${countDisplayed}`;
             } catch (error) {
                 console.error(error);
                 document.getElementById('clickCount').innerText = 'Error loading count';
@@ -57,7 +118,8 @@
                     throw new Error('Failed to increment count');
                 }
                 const data = await response.json();
-                document.getElementById('clickCount').innerText = `Total Clicks: ${data.count}`;
+                countDisplayed = data.count;
+                document.getElementById('clickCount').innerText = `Total Clicks: ${countDisplayed}`;
             } catch (error) {
                 console.error(error);
                 if (retries < MAX_RETRIES) {
@@ -71,6 +133,9 @@
 
         // Initialize the counter when the page loads
         window.onload = fetchClickCount;
+
+        // Real-time updates to the count
+        setInterval(fetchClickCount, 1000); // Every second, refresh the count
     </script>
 
 </body>
