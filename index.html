@@ -3,45 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Click Counter</title>
+    <title>Click Counter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin-top: 50px;
+            padding: 50px;
+        }
+        #clickCount {
+            font-size: 2em;
+            margin-top: 20px;
         }
         button {
-            font-size: 20px;
             padding: 10px 20px;
+            font-size: 1em;
             cursor: pointer;
-        }
-        h1 {
-            font-size: 40px;
         }
     </style>
 </head>
 <body>
-    <h1>Global Click Counter</h1>
-    <button onclick="incrementCounter()">Click Me!</button>
-    <p>Total Clicks: <span id="clickCount">Loading...</span></p>
+
+    <h1>Click Counter</h1>
+    <p>Click the button to increase the count!</p>
+    <button onclick="incrementCounter()">Click Me</button>
+    <div id="clickCount">Loading...</div>
 
     <script>
-        // Fetch and display the current click count from Cloudflare Worker
+        const workerURL = 'https://young-bonus-eb16.ghousshumail-cloudflare.workers.dev';
+
+        // Fetch and display the current click count from the Cloudflare Worker
         async function fetchClickCount() {
-            const response = await fetch('/getCount');
-            const data = await response.json();
-            document.getElementById('clickCount').innerText = data.count;
+            try {
+                const response = await fetch(`${workerURL}/getCount`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch count');
+                }
+                const data = await response.json();
+                document.getElementById('clickCount').innerText = `Total Clicks: ${data.count}`;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('clickCount').innerText = 'Error loading count';
+            }
         }
 
         // Increment the click count via the Cloudflare Worker
         async function incrementCounter() {
-            const response = await fetch('/incrementCount', { method: 'POST' });
-            const data = await response.json();
-            document.getElementById('clickCount').innerText = data.count;
+            try {
+                const response = await fetch(`${workerURL}/incrementCount`, { 
+                    method: 'POST' 
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to increment count');
+                }
+                const data = await response.json();
+                document.getElementById('clickCount').innerText = `Total Clicks: ${data.count}`;
+            } catch (error) {
+                console.error(error);
+                document.getElementById('clickCount').innerText = 'Error incrementing count';
+            }
         }
 
         // Initialize the counter when the page loads
         window.onload = fetchClickCount;
     </script>
+
 </body>
 </html>
