@@ -3,78 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Coming Soon</title>
+    <title>Global Click Counter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-size: cover;
-        }
-
-        .container {
             text-align: center;
-            padding: 40px;
-            background-color: rgba(255, 255, 255, 0.8); /* Slight transparency */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            width: 80%;
-            max-width: 500px;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png'); /* Light pattern */
-            background-size: 50px 50px;
+            margin-top: 50px;
         }
-
-        h1 {
-            font-size: 50px;
-            color: #ff7f7f; /* Bright pastel pink */
-            margin-bottom: 10px;
-        }
-
-        p {
+        button {
             font-size: 20px;
-            color: #6fa3ef; /* Bright pastel blue */
-            margin-bottom: 20px;
+            padding: 10px 20px;
+            cursor: pointer;
         }
-
-        .date {
-            margin-top: 30px;
-            font-size: 16px;
-            color: #999;
+        h1 {
+            font-size: 40px;
         }
     </style>
 </head>
 <body>
+    <h1>Global Click Counter</h1>
+    <button onclick="incrementCounter()">Click Me!</button>
+    <p>Total Clicks: <span id="clickCount">Loading...</span></p>
 
-<div class="container">
-    <h1>Procrastinating...</h1>
-    <p>Coming Soon!</p>
-    <div class="date">
-        <p><strong id="current-date"></strong></p>
-    </div>
-</div>
+    <script>
+        // Fetch and display the current click count from Cloudflare Worker
+        async function fetchClickCount() {
+            const response = await fetch('/getCount');
+            const data = await response.json();
+            document.getElementById('clickCount').innerText = data.count;
+        }
 
-<script>
-    // Array of pastel background colors to cycle through
-    const colors = [
-        'linear-gradient(to bottom, #ffb6c1, #ffecb3)', // Pink to Yellow
-        'linear-gradient(to bottom, #c1e1ff, #a8c7e8)', // Light Blue to Lavender
-        'linear-gradient(to bottom, #ffd1dc, #e3f9ff)', // Light Pink to Light Blue
-        'linear-gradient(to bottom, #ffcccb, #b2f7ef)', // Peach to Aqua
-    ];
+        // Increment the click count via the Cloudflare Worker
+        async function incrementCounter() {
+            const response = await fetch('/incrementCount', { method: 'POST' });
+            const data = await response.json();
+            document.getElementById('clickCount').innerText = data.count;
+        }
 
-    // Change the background color randomly on refresh
-    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-    document.body.style.background = randomColor;
-
-    // Display current date dynamically
-    const currentDate = new Date().toLocaleDateString();
-    document.getElementById('current-date').textContent = currentDate;
-</script>
-
+        // Initialize the counter when the page loads
+        window.onload = fetchClickCount;
+    </script>
 </body>
 </html>
