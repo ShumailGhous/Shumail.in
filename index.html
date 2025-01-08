@@ -16,8 +16,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
-      line-height: 1.5;
+      font-size: 3rem; /* Larger text */
+      line-height: 1.8;
       margin: 0 10%; /* Add borders on left and right */
     }
     .final-section {
@@ -26,7 +26,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
+      font-size: 3rem;
       text-align: center;
       line-height: 2;
       margin: 0 10%; /* Add borders on left and right */
@@ -46,28 +46,49 @@
   <div class="section">What are you doing here?</div>
   <div class="section">Who sent you here?</div>
   <div class="section">
-    The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language.
+    The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language. Really? Is this the best you could find?
   </div>
   <div class="section">Are you a bot? If yes, Close this tab right now.</div>
-  <div class="section">So you are not a bot? You really are a human.</div>
-  <div class="section">How strange, Now would you please tell me your purpose of this visit.</div>
-  <div class="section">Are you still not tired of scrolling?</div>
-  <div class="section">This is not instagram, you don't have to doomscroll here also.</div>
+  <div class="section">So you are not a bot? You really are a human. How surprising.</div>
+  <div class="section">How strange, Now would you please tell me your purpose of this visit? Was there a secret mission you came for?</div>
+  <div class="section">Are you still not tired of scrolling? Is this really what you came here for?</div>
   <div class="section">
-    <a href="https://youtu.be/dQw4w9WgXcQ">Click here to scroll all the way down to bottom.</a>
+    <a href="https://youtu.be/dQw4w9WgXcQ">Click here to scroll all the way down to bottom. (I dare you!)</a>
   </div>
-  <div class="section">Did you click it?</div>
-  <div class="section">You don't like shortcuts?</div>
-  <div class="section">Okay, You Stubborn little child. What do you even expect to find at the bottom of this mess?</div>
-  <div class="section">Let's end this now, once and for all</div>
+  <div class="section">Did you click it? Oh no, you fell for it!</div>
+  <div class="section">You don't like shortcuts? Okay, You stubborn little child. What do you even expect to find at the bottom of this mess?</div>
+  <div class="section">Let's end this now, once and for all. Or will you keep scrolling forever?</div>
   <div class="final-section">
     Congratulations, You successfully wasted <span id="time-wasted">___</span> minutes of your life scrolling.<br>
     <span id="total-time">___</span> minutes have been wasted by <span id="visitor-count">___</span> visitors so far.<br>
-    You scrolled <span id="scroll-distance">___</span> metres, equating to the length of a <span id="comparison">___</span>.
+    You scrolled <span id="scroll-distance">___</span> metres, equating to the length of <span id="comparison">___</span>.<br>
+    What a glorious achievement.
   </div>
   <div class="section">
-    Made with 🛠️ by human.<br>
-    <a href="#top">Click here to scroll to the top.</a>
+    Made with love by human.<br>
+    <a href="#top">Click here to scroll to the top. (Or don't. I'm not your boss.)</a>
   </div>
+
+  <script>
+    // Fetch dynamic stats from Cloudflare Worker
+    async function fetchDynamicData() {
+      try {
+        const response = await fetch('https://raspy-band-7de8.ghousshumail-cloudflare.workers.dev');
+        const data = await response.json();
+
+        // Populate dynamic values
+        document.getElementById('time-wasted').textContent = data.timeWasted || '0';
+        document.getElementById('total-time').textContent = data.totalMinutes || '0';
+        document.getElementById('visitor-count').textContent = data.visitorCount || '0';
+        document.getElementById('scroll-distance').textContent = data.scrollDistance || '0';
+        document.getElementById('comparison').textContent = data.comparison || 'a mystery object';
+      } catch (error) {
+        console.error('Error fetching dynamic data:', error);
+      }
+    }
+
+    // Call the function when the page loads
+    window.onload = fetchDynamicData;
+  </script>
 </body>
 </html>
