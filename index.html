@@ -7,21 +7,21 @@
   <style>
     body {
       margin: 0;
-      font-family: "Courier New", Courier, monospace; /* Classic-modern typewriter style */
-      background: linear-gradient(to bottom, #f5f5dc, #fff); /* Subtle bone/cream gradient */
+      font-family: "Courier New", Courier, monospace;
+      background: linear-gradient(to bottom, #f5f5dc, #fff);
       color: #333;
     }
     .section {
-      height: 100vh; /* Each section takes a full page */
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 3rem; /* Larger text */
+      font-size: 3rem;
       line-height: 1.8;
-      margin: 0 10%; /* Add borders on left and right */
+      margin: 0 10%;
     }
     .final-section {
-      height: 150vh; /* Give extra space for the final stats section */
+      height: 150vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -29,7 +29,20 @@
       font-size: 3rem;
       text-align: center;
       line-height: 2;
-      margin: 0 10%; /* Add borders on left and right */
+      margin: 0 10%;
+    }
+    .work-in-progress {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffcc00;
+      padding: 10px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      border-radius: 5px;
+      color: black;
+      z-index: 1000;
     }
     a {
       color: #007acc;
@@ -41,52 +54,39 @@
   </style>
 </head>
 <body>
-  <div class="section">Umm, Hey?</div>
-  <div class="section">Are you supposed to be here? I don't think so.</div>
-  <div class="section">What are you doing here?</div>
-  <div class="section">Who sent you here?</div>
-  <div class="section">Wait, you really decided to scroll all the way down here? What are you doing with your life?</div>
-  <div class="section">Oh, you think this is some kind of treasure hunt? Spoiler alert: It's not.</div>
-  <div class="section">I hope you didn’t think there was some life-changing revelation at the bottom of this page.</div>
-  <div class="section">
-    The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language. Really? Is this the best you could find?
-    You’ve now discovered an obscure website that barely anyone knows about, with a domain name that’s, quite frankly, not even worth mentioning in any dictionary, ever. 
-    But, hey, welcome to the void. The internet has truly outdone itself this time.
+
+  <!-- Work in Progress sign -->
+  <div class="work-in-progress">
+    🚧 Work in Progress! 🚧
   </div>
-  <div class="section">Are you a bot? If yes, Close this tab right now.</div>
-  <div class="section">So you are not a bot? You really are a human. How surprising.</div>
-  <div class="section">How strange, Now would you please tell me your purpose of this visit? Was there a secret mission you came for?</div>
-  <div class="section">Are you still not tired of scrolling? Is this really what you came here for?</div>
-  <div class="section">Are you a bot? Don’t even try to lie to me, I know a bot when I see one. Go ahead, close this tab if you are one.</div>
-  <div class="section">So you’re telling me, you’re actually a human? Wow. The audacity.</div>
-  <div class="section">You know what’s the most fascinating thing here? Your decision to keep scrolling. Honestly, I’m not sure if I should be impressed or concerned.</div>
-  <div class="section">Still not tired of scrolling? Are you absolutely certain you’re not a robot sent to test human patience?</div>
+
+  <div class="section">Hmm, what are you doing here?</div>
+  <div class="section">Are you lost? Or just curious?</div>
+  <div class="section">You’ve scrolled so far. What are you hoping to find?</div>
+  <div class="section">Is this some kind of treasure hunt for you?</div>
+  <div class="section">You really thought there would be something here, didn’t you?</div>
+  <div class="section">By now, you must be wondering, “Why am I still scrolling?”</div>
+  <div class="section">Here’s a fun fact: You’re not the first to scroll this far.</div>
+  <div class="section">It’s okay to give up, you know. No one’s judging.</div>
+  <div class="section">But hey, you’ve made it this far. Impressive? Maybe. A little strange? Definitely.</div>
+  <div class="section">Let me guess, you’re thinking there must be a secret waiting at the end. Spoiler: There isn’t.</div>
+  <div class="section">I should’ve warned you earlier: This is a never-ending scroll.</div>
+  <div class="section">Are you still scrolling? Honestly, you’re surprising me.</div>
+  <div class="section">If you’re still here, you must be very determined.</div>
+  <div class="section">But seriously, do you think there’s some life-changing revelation down here?</div>
   <div class="section">
-    <a href="https://youtu.be/dQw4w9WgXcQ">Click here to scroll all the way down to bottom. (I dare you!)</a>
-    <a href="https://youtu.be/dQw4w9WgXcQ">Click here if you’re brave enough to scroll all the way to the bottom... I dare you!</a>
+    <a href="https://youtu.be/dQw4w9WgXcQ">Click here for a surprise (or not)</a>
   </div>
-  <div class="section">Did you click it? Oh no, you fell for it!</div>
-  <div class="section">You don't like shortcuts? Okay, You stubborn little child. What do you even expect to find at the bottom of this mess?</div>
-  <div class="section">Let's end this now, once and for all. Or will you keep scrolling forever?</div>
-  <div class="section">Did you actually click it? Ah, the clickbait worked on you. What a surprise.</div>
-  <div class="section">You seriously don’t like shortcuts, do you? Fine, be stubborn. Let’s see how long you can scroll for.</div>
-  <div class="section">What exactly are you hoping to find here, by the way? A golden nugget of wisdom? A life-changing insight? Spoiler: You won’t find any of that.</div>
-  <div class="section">How much longer are you planning on scrolling? I’m almost out of sarcastic comments at this point, but here we go...</div>
-  <div class="section">
-    I mean, at this point, you’ve scrolled so far, you’ve probably passed a couple of existential crises. Still going, huh? Impressive. Or worrying. Depends on how you look at it.
-  </div>
-  <div class="section">Okay, Okay. Let’s wrap this up before you scroll into oblivion and forget what you were even looking for.</div>
+  <div class="section">Did you click it? Gotcha!</div>
+  <div class="section">So, no shortcut? Fine, you want to do this the hard way?</div>
+  <div class="section">Let’s be real, you’re probably scrolling just to prove you can.</div>
+  <div class="section">Now that you’re down here, what’s your next move? Keep scrolling?</div>
   <div class="final-section">
-    Congratulations, You successfully wasted your life scrolling.<br>
-    You scrolled so far that now you should probably rethink your life choices.<br>
-    But hey, good job. You've mastered the art of scrolling endlessly.<br>
-    In total, you’ve scrolled so much that you're probably in some kind of alternate dimension by now. I bet you feel like a champion, huh?
+    Congratulations! You've just spent way too much time scrolling. What did you achieve? Nothing really, but hey, you got to the end!
   </div>
   <div class="section">
     Made with love by human.<br>
-    <a href="#top">Click here to scroll to the top. (Or don't. I'm not your boss.)</a>
-    Made with love (and a bit of regret) by a human.<br>
-    <a href="#top">Click here if you’re done wasting your time and want to scroll back to the top. Or don’t. Whatever.</a>
+    <a href="#top">Click here to scroll back up, or don’t. It’s your call.</a>
   </div>
 </body>
 </html>
