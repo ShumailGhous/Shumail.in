@@ -3,167 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Click Counter</title>
+    <title>Obscure Website</title>
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
     <style>
-        /* General Styles */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #121212;
-            color: #fff;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            overflow: hidden;
+            font-family: 'Courier Prime', monospace;
+            background: linear-gradient(to bottom, #f5f5dc, #fff4e6);
+            background-size: 100% 200%;
+            background-position: top;
+            transition: background-position 0.1s ease;
+            overflow-x: hidden;
         }
-
-        /* Clock in the top left */
-        #clock {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            font-size: 1.5em;
-            color: #00ffab;
-            font-weight: 600;
-        }
-
-        /* Centered Content */
-        .content {
+        .container {
             text-align: center;
+            margin-top: 50px;
+            line-height: 2;
+            font-size: 3rem;
         }
-
-        h1 {
-            font-size: 3em;
-            margin-bottom: 10px;
-            color: #00ffab;
+        .content {
+            margin: 3000px 0;
         }
-
-        p {
-            font-size: 1.2em;
-            color: #00c4cc;
-        }
-
-        button {
-            background: transparent;
-            border: 2px solid #00ffab;
-            color: #00ffab;
-            font-size: 1.5em;
-            padding: 15px 30px;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        button:hover {
-            background: #00ffab;
-            color: #121212;
-            transform: scale(1.1);
-        }
-
-        #clickCount {
-            font-size: 2em;
-            margin-top: 20px;
-            color: #00ffab;
-            letter-spacing: 2px;
-        }
-
-        /* Footer at the bottom */
-        footer {
-            position: absolute;
-            bottom: 20px;
-            font-size: 1.2em;
-            color: #fff;
-        }
-
-        footer span {
-            color: #00ffab;
+        .link {
+            color: #000;
+            text-decoration: none;
             font-weight: bold;
+            border: 2px solid #000;
+            padding: 5px 10px;
+        }
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2rem;
+        }
+        .dynamic-stats {
+            font-size: 1.5rem;
+            margin-top: 50px;
         }
     </style>
 </head>
 <body>
-
-    <!-- Live Clock -->
-    <div id="clock"></div>
-
-    <!-- Main Content -->
-    <div class="content">
-        <h1>Click Counter</h1>
-        <p>Click the button to increase the count globally!</p>
-        <button onclick="incrementCounter()">Click Me</button>
-        <div id="clickCount">Loading...</div>
+    <div class="container">
+        <div class="content">
+            <p>Umm, Hey?</p>
+            <p>Are you supposed to be here? I don't think so.</p>
+            <p>What are you doing here?</p>
+            <p>Who sent you here?</p>
+            <p>The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language.</p>
+            <p>Are you a bot? If yes, Close this tab right now?</p>
+            <p>So you are not a bot? You really are a human.</p>
+            <p>How strange, Now would you please tell me your purpose of this visit.</p>
+            <p>Are you still not tired of scrolling?</p>
+            <p><a href="https://youtu.be/dQw4w9WgXcQ" class="link" target="_blank">Click here to scroll all the way down to bottom.</a></p>
+            <p>Did you click it?</p>
+            <p>You don't like shortcuts?</p>
+            <p>Okay, You Stubborn little child. What do you even expect to find at the bottom of this mess?</p>
+            <p>Let's end this now, once and for all.</p>
+            <p>Congratulations, You successfully wasted <span id="timeSpent">0</span> minutes of your life scrolling.</p>
+            <p class="dynamic-stats">___ minutes have been wasted by ___ visitors so far.</p>
+            <p>You scrolled <span id="scrollDistance">0</span> metres, equating to the length of a <span id="comparativeMeasure">school bus</span>.</p>
+            <p>Made with love by human.</p>
+            <p>Have fun.</p>
+        </div>
     </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>Made with ❤️ by <span>HUMAN</span></p>
-    </footer>
-
+    <div class="footer">
+        <a href="#top" class="link">Click here to scroll to the top.</a>
+    </div>
     <script>
-        const workerURL = 'https://young-bonus-eb16.ghousshumail-cloudflare.workers.dev';
-        const MAX_RETRIES = 3;
-        let countDisplayed = 0;
+        let timeSpent = 0;
+        let scrollDistance = 0;
+        let lastScrollTime = Date.now();
 
-        // Update the clock every second
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+        function updateBackgroundPosition() {
+            let scrollTop = window.scrollY;
+            let height = document.documentElement.scrollHeight - window.innerHeight;
+            let scrollPercentage = (scrollTop / height) * 100;
+            document.body.style.backgroundPosition = `top ${scrollPercentage}%`;
         }
 
-        // Fetch and display the current click count from the Cloudflare Worker
-        async function fetchClickCount() {
-            try {
-                const response = await fetch(`${workerURL}/getCount`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch count');
-                }
-                const data = await response.json();
-                countDisplayed = data.count;
-                document.getElementById('clickCount').innerText = `Total Clicks: ${countDisplayed}`;
-            } catch (error) {
-                console.error(error);
-                document.getElementById('clickCount').innerText = 'Error loading count';
+        window.addEventListener('scroll', () => {
+            updateBackgroundPosition();
+            
+            // Time spent tracking
+            let currentTime = Date.now();
+            if (currentTime - lastScrollTime > 1000) {
+                timeSpent++;
+                document.getElementById('timeSpent').innerText = timeSpent;
+                lastScrollTime = currentTime;
             }
-        }
 
-        // Retry mechanism for incrementing the click count
-        async function incrementCounter(retries = 0) {
-            try {
-                const response = await fetch(`${workerURL}/incrementCount`, { 
-                    method: 'POST' 
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to increment count');
-                }
-                const data = await response.json();
-                countDisplayed = data.count;
-                document.getElementById('clickCount').innerText = `Total Clicks: ${countDisplayed}`;
-            } catch (error) {
-                console.error(error);
-                if (retries < MAX_RETRIES) {
-                    console.log(`Retrying... Attempt ${retries + 1}`);
-                    incrementCounter(retries + 1);
-                } else {
-                    document.getElementById('clickCount').innerText = 'Error incrementing count. Please try again later.';
-                }
-            }
-        }
+            // Scroll distance tracking
+            scrollDistance = (window.scrollY / 100);
+            document.getElementById('scrollDistance').innerText = scrollDistance.toFixed(2);
 
-        // Initialize the counter when the page loads
-        window.onload = () => {
-            fetchClickCount();
-            setInterval(updateClock, 1000); // Update clock every second
-        };
+            // Placeholder for dynamic stats (using static for now, as Cloudflare Worker can handle dynamic part)
+            document.querySelector('.dynamic-stats').innerText = `___ minutes have been wasted by ___ visitors so far.`;
+        });
 
-        // Real-time updates to the count
-        setInterval(fetchClickCount, 1000); // Every second, refresh the count
+        // Dynamic placeholder (for Cloudflare Workers to inject)
+        document.getElementById('comparativeMeasure').innerText = 'school bus'; // Could be replaced with dynamic measure
     </script>
-
 </body>
 </html>
