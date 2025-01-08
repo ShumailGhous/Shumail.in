@@ -3,98 +3,199 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Adventure</title>
+  <title>Wasted Time</title>
   <style>
     body {
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      font-family: 'Arial', sans-serif;
+      color: white;
       margin: 0;
-      font-family: "Courier New", Courier, monospace; /* Classic-modern typewriter style */
-      background: linear-gradient(to bottom, #f5f5dc, #fff); /* Subtle bone/cream gradient */
-      color: #333;
-    }
-    .section {
-      height: 100vh; /* Each section takes a full page */
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 3rem; /* Larger text */
-      line-height: 1.8;
-      margin: 0 10%; /* Add borders on left and right */
-    }
-    .final-section {
-      height: 150vh; /* Give extra space for the final stats section */
+      padding: 0;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
-      font-size: 3rem;
+      justify-content: center;
+      min-height: 100vh;
+      transition: background 0.5s ease-in-out;
+    }
+
+    h1 {
       text-align: center;
-      line-height: 2;
-      margin: 0 10%; /* Add borders on left and right */
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
     }
-    a {
-      color: #007acc;
-      text-decoration: none;
+
+    p {
+      font-size: 1.5em;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 20px;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .scroll-progress {
+      margin-top: 50px;
+      font-size: 1.3em;
+      text-align: center;
+    }
+
+    .button {
+      background-color: #ff5733;
+      padding: 15px 30px;
+      font-size: 1.5em;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: transform 0.2s ease;
+    }
+
+    .button:hover {
+      transform: scale(1.1);
+    }
+
+    .emoji {
+      font-size: 2em;
+      margin-top: 20px;
+      animation: emojiBounce 1s infinite alternate;
+    }
+
+    .achievement-banner {
+      background: #ff4b5c;
+      padding: 10px 20px;
+      margin: 20px 0;
+      color: white;
+      font-size: 1.5em;
+      border-radius: 5px;
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes emojiBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-20px); }
     }
   </style>
 </head>
 <body>
-  <div class="section">Umm, Hey?</div>
-  <div class="section">Wait, you really decided to scroll all the way down here? What are you doing with your life?</div>
-  <div class="section">Oh, you think this is some kind of treasure hunt? Spoiler alert: It's not.</div>
-  <div class="section">I hope you didn’t think there was some life-changing revelation at the bottom of this page.</div>
-  <div class="section">
-    You’ve now discovered an obscure website that barely anyone knows about, with a domain name that’s, quite frankly, not even worth mentioning in any dictionary, ever. 
-    But, hey, welcome to the void. The internet has truly outdone itself this time.
+
+  <h1>Wait... You Scrolled All The Way Down Here?</h1>
+  <p>What are you doing with your life? Honestly, I’m not even sure if I should be impressed or concerned.</p>
+  <p>You’re probably wondering if this is some sort of treasure hunt. Spoiler: It’s not.</p>
+  <p>Well, congratulations! You’ve successfully wasted some amount of time that you'll never get back. I hope you’re feeling fulfilled now.</p>
+  
+  <div class="scroll-progress">
+    <p>You’ve scrolled <span id="scroll-distance">0</span> meters. That’s roughly the length of a giraffe’s neck. Cool, right?</p>
+    <p>In total, visitors have collectively wasted <span id="total-time">0</span> minutes. We are all in this together, folks.</p>
+    <p>Oh, and your scroll speed is <span id="scroll-speed">0</span> pixels per second. I didn’t think anyone scrolled this slowly…</p>
   </div>
-  <div class="section">Are you a bot? Don’t even try to lie to me, I know a bot when I see one. Go ahead, close this tab if you are one.</div>
-  <div class="section">So you’re telling me, you’re actually a human? Wow. The audacity.</div>
-  <div class="section">You know what’s the most fascinating thing here? Your decision to keep scrolling. Honestly, I’m not sure if I should be impressed or concerned.</div>
-  <div class="section">Still not tired of scrolling? Are you absolutely certain you’re not a robot sent to test human patience?</div>
-  <div class="section">
-    <a href="https://youtu.be/dQw4w9WgXcQ">Click here if you’re brave enough to scroll all the way to the bottom... I dare you!</a>
-  </div>
-  <div class="section">Did you actually click it? Ah, the clickbait worked on you. What a surprise.</div>
-  <div class="section">You seriously don’t like shortcuts, do you? Fine, be stubborn. Let’s see how long you can scroll for.</div>
-  <div class="section">What exactly are you hoping to find here, by the way? A golden nugget of wisdom? A life-changing insight? Spoiler: You won’t find any of that.</div>
-  <div class="section">How much longer are you planning on scrolling? I’m almost out of sarcastic comments at this point, but here we go...</div>
-  <div class="section">
-    I mean, at this point, you’ve scrolled so far, you’ve probably passed a couple of existential crises. Still going, huh? Impressive. Or worrying. Depends on how you look at it.
-  </div>
-  <div class="section">Okay, Okay. Let’s wrap this up before you scroll into oblivion and forget what you were even looking for.</div>
-  <div class="final-section">
-    Congratulations, You’ve successfully wasted <span id="time-wasted">___</span> minutes of your life that you’ll never get back. You’ve entered the annals of the internet’s most meaningless achievements.<br>
-    In total, <span id="total-time">___</span> minutes have been collectively wasted by <span id="visitor-count">___</span> visitors, and frankly, I’m starting to feel bad for all of us.<br>
-    You’ve scrolled <span id="scroll-distance">___</span> meters, which, in reality, is just the distance between you and your purpose on this earth. But don’t worry, you’re not alone. Someone else is out there wasting time with you.<br>
-    Oh, and did you know that the distance you’ve scrolled is roughly equivalent to the length of <span id="comparison">___</span>? Yeah, that’s right. That’s what you’ve achieved today.
-  </div>
-  <div class="section">
-    Made with love (and a bit of regret) by a human.<br>
-    <a href="#top">Click here if you’re done wasting your time and want to scroll back to the top. Or don’t. Whatever.</a>
-  </div>
+
+  <div class="emoji" id="emoji-reaction">😂</div>
+
+  <div class="achievement-banner" id="achievement-banner">Achievement Unlocked: Best Scroller!</div>
+  
+  <button class="button" id="scroll-more">Click me if you’re brave enough to keep scrolling</button>
 
   <script>
-    // Fetch dynamic stats from Cloudflare Worker
-    async function fetchDynamicData() {
-      try {
-        const response = await fetch('https://raspy-band-7de8.ghousshumail-cloudflare.workers.dev');
-        const data = await response.json();
+    let totalTime = 0; // Time wasted in minutes
+    let scrollStreak = 0; // Continuous scroll streak
+    let lastScrollTime = 0; // To track time spent per scroll
+    let lastScrollPos = 0; // To track scroll position for speed
+    let scrollSpeed = 0; // Pixels per second
 
-        // Populate dynamic values
-        document.getElementById('time-wasted').textContent = data.timeWasted || '0';
-        document.getElementById('total-time').textContent = data.totalMinutes || '0';
-        document.getElementById('visitor-count').textContent = data.visitorCount || '0';
-        document.getElementById('scroll-distance').textContent = data.scrollDistance || '0';
-        document.getElementById('comparison').textContent = data.comparison || 'a mystery object';
-      } catch (error) {
-        console.error('Error fetching dynamic data:', error);
+    const totalTimeElement = document.getElementById("total-time");
+    const scrollDistanceElement = document.getElementById("scroll-distance");
+    const scrollSpeedElement = document.getElementById("scroll-speed");
+    const emojiReactionElement = document.getElementById("emoji-reaction");
+    const achievementBanner = document.getElementById("achievement-banner");
+
+    let scrollHistory = [];
+
+    // Meme references
+    const memes = [
+      "This is like the time I scrolled into the void and found myself.",
+      "Scroll more, it's like Netflix but with less drama.",
+      "You’re officially a part of the 'I Scrolled For No Reason' club!",
+      "What are you hoping to find, a cat meme or enlightenment?",
+      "Is this what happiness feels like? Scrolling endlessly?"
+    ];
+
+    window.addEventListener("scroll", () => {
+      // Track total scroll distance
+      let scrollY = window.scrollY;
+      let scrollDistance = scrollY / 100; // Approximate meters
+      scrollDistanceElement.innerText = scrollDistance.toFixed(2);
+      
+      // Calculate scroll speed (pixels per second)
+      let now = Date.now();
+      if (lastScrollTime !== 0) {
+        let timeDiff = now - lastScrollTime;
+        scrollSpeed = (scrollY - lastScrollPos) / timeDiff * 1000; // Pixels per second
       }
-    }
+      lastScrollTime = now;
+      lastScrollPos = scrollY;
+      scrollSpeedElement.innerText = scrollSpeed.toFixed(2);
 
-    // Call the function when the page loads
-    window.onload = fetchDynamicData;
+      // Track time wasted and display meme
+      totalTime = Math.floor(scrollY / 60); // Rough estimate of time spent
+      totalTimeElement.innerText = totalTime;
+
+      if (scrollY > 1000) {
+        emojiReactionElement.innerText = "🙄"; // Emojis to express scroll fatigue
+      } else if (scrollY > 500) {
+        emojiReactionElement.innerText = "😆"; // A cheeky emoji when scrolling
+      }
+
+      // Display meme reference
+      if (scrollY > 1000 && scrollY < 2000) {
+        emojiReactionElement.innerText = memes[0];
+      } else if (scrollY > 2000 && scrollY < 3000) {
+        emojiReactionElement.innerText = memes[1];
+      } else if (scrollY > 3000 && scrollY < 4000) {
+        emojiReactionElement.innerText = memes[2];
+      } else if (scrollY > 4000 && scrollY < 5000) {
+        emojiReactionElement.innerText = memes[3];
+      } else if (scrollY > 5000) {
+        emojiReactionElement.innerText = memes[4];
+      }
+
+      // Track continuous scrolling streak
+      if (scrollY > 500 && scrollStreak === 0) {
+        scrollStreak = Math.floor(scrollY / 100); // Basic streak calculation
+      }
+
+      // Award achievements
+      if (scrollY > 2000 && !achievementBanner.innerText.includes('Best Scroller')) {
+        achievementBanner.style.display = "block";
+        achievementBanner.innerText = "Achievement Unlocked: Best Scroller!";
+      }
+
+      // Easter egg hunt
+      if (scrollY > 3000 && !document.querySelector("#hidden-item")) {
+        let easterEgg = document.createElement("div");
+        easterEgg.id = "hidden-item";
+        easterEgg.style.position = "fixed";
+        easterEgg.style.top = "50%";
+        easterEgg.style.left = "50%";
+        easterEgg.style.transform = "translate(-50%, -50%)";
+        easterEgg.style.background = "yellow";
+        easterEgg.style.padding = "10px";
+        easterEgg.style.borderRadius = "5px";
+        easterEgg.innerText = "Congrats! You found the hidden Easter Egg!";
+        document.body.appendChild(easterEgg);
+      }
+    });
+
+    // Button click functionality for scrolling
+    document.getElementById("scroll-more").addEventListener("click", () => {
+      document.body.style.background = "linear-gradient(to right, #ff9a8b, #ff6a88)"; // Fun background change on click
+      document.querySelector("#scroll-more").innerText = "Are you sure you want to keep going? 🤔";
+    });
   </script>
+
 </body>
 </html>
