@@ -1,110 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obscure Website</title>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Courier Prime', monospace;
-            background: linear-gradient(to bottom, #f5f5dc, #fff4e6);
-            background-size: 100% 200%;
-            background-position: top;
-            transition: background-position 0.1s ease;
-            overflow-x: hidden;
-        }
-        .container {
-            text-align: center;
-            margin-top: 50px;
-            line-height: 2;
-            font-size: 3rem;
-        }
-        .content {
-            margin: 3000px 0;
-        }
-        .link {
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            border: 2px solid #000;
-            padding: 5px 10px;
-        }
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.2rem;
-        }
-        .dynamic-stats {
-            font-size: 1.5rem;
-            margin-top: 50px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll Adventure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Courier New", Courier, monospace; /* Classic-modern typewriter style */
+      background: linear-gradient(to bottom, #f5f5dc, #fff); /* Subtle bone/cream gradient */
+      color: #333;
+    }
+    .section {
+      height: 100vh; /* Each section takes a full page */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      line-height: 1.5;
+    }
+    .final-section {
+      height: 150vh; /* Give extra space for the final stats section */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      text-align: center;
+      line-height: 2;
+    }
+    a {
+      color: #007acc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="content">
-            <p>Umm, Hey?</p>
-            <p>Are you supposed to be here? I don't think so.</p>
-            <p>What are you doing here?</p>
-            <p>Who sent you here?</p>
-            <p>The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language.</p>
-            <p>Are you a bot? If yes, Close this tab right now?</p>
-            <p>So you are not a bot? You really are a human.</p>
-            <p>How strange, Now would you please tell me your purpose of this visit.</p>
-            <p>Are you still not tired of scrolling?</p>
-            <p><a href="https://youtu.be/dQw4w9WgXcQ" class="link" target="_blank">Click here to scroll all the way down to bottom.</a></p>
-            <p>Did you click it?</p>
-            <p>You don't like shortcuts?</p>
-            <p>Okay, You Stubborn little child. What do you even expect to find at the bottom of this mess?</p>
-            <p>Let's end this now, once and for all.</p>
-            <p>Congratulations, You successfully wasted <span id="timeSpent">0</span> minutes of your life scrolling.</p>
-            <p class="dynamic-stats">___ minutes have been wasted by ___ visitors so far.</p>
-            <p>You scrolled <span id="scrollDistance">0</span> metres, equating to the length of a <span id="comparativeMeasure">school bus</span>.</p>
-            <p>Made with love by human.</p>
-            <p>Have fun.</p>
-        </div>
-    </div>
-    <div class="footer">
-        <a href="#top" class="link">Click here to scroll to the top.</a>
-    </div>
-    <script>
-        let timeSpent = 0;
-        let scrollDistance = 0;
-        let lastScrollTime = Date.now();
-
-        function updateBackgroundPosition() {
-            let scrollTop = window.scrollY;
-            let height = document.documentElement.scrollHeight - window.innerHeight;
-            let scrollPercentage = (scrollTop / height) * 100;
-            document.body.style.backgroundPosition = `top ${scrollPercentage}%`;
-        }
-
-        window.addEventListener('scroll', () => {
-            updateBackgroundPosition();
-            
-            // Time spent tracking
-            let currentTime = Date.now();
-            if (currentTime - lastScrollTime > 1000) {
-                timeSpent++;
-                document.getElementById('timeSpent').innerText = timeSpent;
-                lastScrollTime = currentTime;
-            }
-
-            // Scroll distance tracking
-            scrollDistance = (window.scrollY / 100);
-            document.getElementById('scrollDistance').innerText = scrollDistance.toFixed(2);
-
-            // Placeholder for dynamic stats (using static for now, as Cloudflare Worker can handle dynamic part)
-            document.querySelector('.dynamic-stats').innerText = `___ minutes have been wasted by ___ visitors so far.`;
-        });
-
-        // Dynamic placeholder (for Cloudflare Workers to inject)
-        document.getElementById('comparativeMeasure').innerText = 'school bus'; // Could be replaced with dynamic measure
-    </script>
+  <div class="section">Umm, Hey?</div>
+  <div class="section">Are you supposed to be here? I don't think so.</div>
+  <div class="section">What are you doing here?</div>
+  <div class="section">Who sent you here?</div>
+  <div class="section">
+    The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language.
+  </div>
+  <div class="section">Are you a bot? If yes, Close this tab right now?</div>
+  <div class="section">So you are not a bot? You really are a human.</div>
+  <div class="section">How strange, Now would you please tell me your purpose of this visit.</div>
+  <div class="section">Are you still not tired of scrolling?</div>
+  <div class="section">
+    <a href="https://youtu.be/dQw4w9WgXcQ">Click here to scroll all the way down to bottom.</a>
+  </div>
+  <div class="section">Did you click it?</div>
+  <div class="section">You don't like shortcuts?</div>
+  <div class="section">Okay, You Stubborn little child. What do you even expect to find at the bottom of this mess?</div>
+  <div class="section">Let's end this now, once and for all</div>
+  <div class="final-section">
+    Congratulations, You successfully wasted <span id="time-wasted">___</span> minutes of your life scrolling.<br>
+    <span id="total-time">___</span> minutes have been wasted by <span id="visitor-count">___</span> visitors so far.<br>
+    You scrolled <span id="scroll-distance">___</span> metres, equating to the length of a <span id="comparison">___</span>.
+  </div>
+  <div class="section">
+    Made with love by human.<br>
+    <a href="#top">Click here to scroll to the top.</a>
+  </div>
 </body>
 </html>
