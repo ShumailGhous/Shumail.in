@@ -48,10 +48,11 @@
   <div class="section">
     The internet is a vast ocean of knowledge and resources yet you came here on this obscure unknown website with a domain name of no significant value in any language.
   </div>
-  <div class="section">Are you a bot? If yes, Close this tab right now?</div>
+  <div class="section">Are you a bot? If yes, Close this tab right now.</div>
   <div class="section">So you are not a bot? You really are a human.</div>
   <div class="section">How strange, Now would you please tell me your purpose of this visit.</div>
   <div class="section">Are you still not tired of scrolling?</div>
+  <div class="section">This is not instagram, you don't have to doomscroll here also.</div>
   <div class="section">
     <a href="https://youtu.be/dQw4w9WgXcQ">Click here to scroll all the way down to bottom.</a>
   </div>
@@ -65,29 +66,8 @@
     You scrolled <span id="scroll-distance">___</span> metres, equating to the length of a <span id="comparison">___</span>.
   </div>
   <div class="section">
-    Made with love by human.<br>
+    Made with 🛠️ by human.<br>
     <a href="#top">Click here to scroll to the top.</a>
   </div>
-  <script>
-    // Fetch dynamic stats from Cloudflare Worker
-    async function fetchDynamicData() {
-      try {
-        const response = await fetch('https://raspy-band-7de8.ghousshumail-cloudflare.workers.dev');
-        const data = await response.json();
-
-        // Populate dynamic values
-        document.getElementById('time-wasted').textContent = data.timeWasted || '0';
-        document.getElementById('total-time').textContent = data.totalMinutes || '0';
-        document.getElementById('visitor-count').textContent = data.visitorCount || '0';
-        document.getElementById('scroll-distance').textContent = data.scrollDistance || '0';
-        document.getElementById('comparison').textContent = data.comparison || 'a mystery object';
-      } catch (error) {
-        console.error('Error fetching dynamic data:', error);
-      }
-    }
-
-    // Call the function when the page loads
-    window.onload = fetchDynamicData;
-  </script>
 </body>
 </html>
