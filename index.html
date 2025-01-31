@@ -8,8 +8,13 @@
     body {
       margin: 0;
       font-family: "Courier New", Courier, monospace;
-      background: linear-gradient(to bottom, #f5f5dc, #fff);
-      color: #333;
+      background: linear-gradient(to bottom, #222, #111);
+      color: #eee;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none; /* Internet Explorer/Edge */
+    }
+    body::-webkit-scrollbar {
+      display: none; /* Chrome, Safari, Edge */
     }
     .section {
       height: 100vh;
@@ -45,7 +50,7 @@
       z-index: 1000;
     }
     a {
-      color: #007acc;
+      color: #0af;
       text-decoration: none;
     }
     a:hover {
@@ -54,8 +59,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Work in Progress sign -->
   <div class="work-in-progress">
     🚧 Work in Progress! 🚧
   </div>
@@ -74,19 +77,41 @@
   <div class="section">Are you still scrolling? Honestly, you’re surprising me.</div>
   <div class="section">If you’re still here, you must be very determined.</div>
   <div class="section">But seriously, do you think there’s some life-changing revelation down here?</div>
-  <div class="section">
-    <a href="https://youtu.be/dQw4w9WgXcQ">Click here for a surprise (or not)</a>
-  </div>
+  <div class="section"><a href="https://youtu.be/dQw4w9WgXcQ">Click here for a surprise (or not)</a></div>
   <div class="section">Did you click it? Gotcha!</div>
   <div class="section">So, no shortcut? Fine, you want to do this the hard way?</div>
   <div class="section">Let’s be real, you’re probably scrolling just to prove you can.</div>
   <div class="section">Now that you’re down here, what’s your next move? Keep scrolling?</div>
+  <div class="section">I respect your dedication, but do you even remember why you started?</div>
+  <div class="section">At this point, you’ve scrolled more than you’ve exercised all year.</div>
+  <div class="section">Tell me, was it worth it?</div>
+  <div class="section">This page isn’t going to suddenly reveal the meaning of life.</div>
+  <div class="section">But hey, if wasting time is an art, consider yourself a masterpiece.</div>
+  <div class="section">You’ve scrolled so much, I should charge you rent.</div>
+  <div class="section">Are you sure you’re not stuck in an infinite loop?</div>
+  <div class="section">You must really enjoy scrolling.</div>
+  <div class="section">Do you feel accomplished? Because you should. Kind of.</div>
+  <div class="section">I can’t believe you’re still here.</div>
+  <div class="section">Okay, last warning. There’s nothing down here.</div>
+  <div class="section">Fine. Scroll to the very end. I dare you.</div>
+  
   <div class="final-section">
-    Congratulations! You've just spent way too much time scrolling. What did you achieve? Nothing really, but hey, you got to the end!
+    Congratulations! You've just reached the end. Or have you? The choice is yours.<br>
+    All I know is that you wasted <span id="time-spent"></span> seconds and scrolled <span id="distance-scrolled"></span> meters.<br>
+    And guess what? You even burnt <span id="calories-burnt"></span> calories in doing so.<br>
+    Isn’t this the most movement you’ve done all year? Be honest.
   </div>
-  <div class="section">
-    Made with love by human.<br>
-    <a href="#top">Click here to scroll back up, or don’t. It’s your call.</a>
-  </div>
+  
+  <script>
+    let startTime = Date.now();
+    window.onscroll = function() {
+      let timeSpent = Math.floor((Date.now() - startTime) / 1000);
+      let distanceScrolled = Math.floor(window.scrollY * 0.05);
+      let caloriesBurnt = Math.floor(distanceScrolled * 0.05);
+      document.getElementById('time-spent').textContent = timeSpent;
+      document.getElementById('distance-scrolled').textContent = distanceScrolled;
+      document.getElementById('calories-burnt').textContent = caloriesBurnt;
+    };
+  </script>
 </body>
 </html>
