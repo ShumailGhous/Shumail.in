@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scroll Adventure</title>
+  <title>Why are you here?</title>
   <style>
     body {
       margin: 0;
@@ -24,6 +24,7 @@
       font-size: 3rem;
       line-height: 1.8;
       margin: 0 10%;
+      text-align: center;
     }
     .final-section {
       height: 150vh;
@@ -90,6 +91,8 @@
   <div class="section">You’ve scrolled so much, I should charge you rent.</div>
   <div class="section">Are you sure you’re not stuck in an infinite loop?</div>
   <div class="section">You must really enjoy scrolling.</div>
+  <div class="section">Doomscrolling Instagram Reels wasn’t enough, huh? Had to test your scrolling endurance here too?</div>
+  <div class="section">At least this page isn’t feeding you random content. Just existential dread. Enjoy.</div>
   <div class="section">Do you feel accomplished? Because you should. Kind of.</div>
   <div class="section">I can’t believe you’re still here.</div>
   <div class="section">Okay, last warning. There’s nothing down here.</div>
@@ -106,8 +109,8 @@
     let startTime = Date.now();
     window.onscroll = function() {
       let timeSpent = Math.floor((Date.now() - startTime) / 1000);
-      let distanceScrolled = Math.floor(window.scrollY * 0.05);
-      let caloriesBurnt = Math.floor(distanceScrolled * 0.05);
+      let distanceScrolled = Math.floor(window.scrollY * 0.02); // Adjusted scale for better accuracy
+      let caloriesBurnt = Math.floor(distanceScrolled * 0.02);
       document.getElementById('time-spent').textContent = timeSpent;
       document.getElementById('distance-scrolled').textContent = distanceScrolled;
       document.getElementById('calories-burnt').textContent = caloriesBurnt;
