@@ -100,21 +100,8 @@
   
   <div class="final-section">
     Congratulations! You've just reached the end. Or have you? The choice is yours.<br>
-    All I know is that you wasted <span id="time-spent"></span> seconds and scrolled <span id="distance-scrolled"></span> meters.<br>
-    And guess what? You even burnt <span id="calories-burnt"></span> calories in doing so.<br>
-    Isn’t this the most movement you’ve done all year? Be honest.
+    But let’s be real—you scrolled all this way, and for what? Satisfaction? A reward? <br>
+    Well, here’s your prize: a moment of self-awareness. Maybe it's time to touch some grass. 🌱
   </div>
-  
-  <script>
-    let startTime = Date.now();
-    window.onscroll = function() {
-      let timeSpent = Math.floor((Date.now() - startTime) / 1000);
-      let distanceScrolled = Math.floor(window.scrollY * 0.02); // Adjusted scale for better accuracy
-      let caloriesBurnt = Math.floor(distanceScrolled * 0.02);
-      document.getElementById('time-spent').textContent = timeSpent;
-      document.getElementById('distance-scrolled').textContent = distanceScrolled;
-      document.getElementById('calories-burnt').textContent = caloriesBurnt;
-    };
-  </script>
 </body>
 </html>
